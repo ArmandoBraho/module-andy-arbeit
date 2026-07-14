@@ -1,0 +1,40 @@
+// Brand colors
+$color-primary: #d35400;
+$color-primary-dark: #b84300;
+$color-primary-light: #e67e22;
+
+$color-text: #1a1a1a;
+$color-text-muted: #5a5a5a;
+$color-text-inverse: #ffffff;
+
+$color-bg: #ffffff;
+$color-bg-alt: #f5f6f8;
+$color-border: #e2e5ea;
+
+$color-success: #1e7e34;
+$color-error: #c0392b;
+
+// Typography
+$font-family: 'Inter', system-ui, -apple-system, sans-serif;
+$font-size-base: 1rem;
+$line-height-base: 1.6;
+
+// Layout
+$container-max: 1200px;
+$header-height: 72px;
+$radius-sm: 6px;
+$radius-md: 10px;
+$radius-lg: 16px;
+
+// Breakpoints
+$bp-md: 768px;
+$bp-lg: 1024px;
+
+// Shadows
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+$shadow-md: 0 8px 24px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.12);
+
+// Transitions
+$transition-fast: 0.15s ease;
+$transition-base: 0.25s ease;
