@@ -1,13 +1,6 @@
 import { Link } from 'react-router-dom'
 import { services } from '../../data/content'
-
-const serviceIcons: Record<string, string> = {
-  abwassertechnik: '🔧',
-  gebaeudereinigung: '✨',
-  komplettsanierung: '🏗️',
-  hausmeisterservice: '🏠',
-  'garten-landschaftspflege': '🌿',
-}
+import { ServiceIcon } from '../ui/ServiceIcon'
 
 type ServicesSectionProps = {
   showAllLink?: boolean
@@ -31,12 +24,14 @@ export function ServicesSection({ showAllLink = true, limit }: ServicesSectionPr
         <div className="services-grid">
           {displayedServices.map((service) => (
             <article key={service.id} className="service-card">
-              <div className="service-card__icon" aria-hidden="true">
-                {serviceIcons[service.id] ?? '⚙️'}
+              <div className="service-card__heading">
+                <div className="service-card__icon" aria-hidden="true">
+                  <ServiceIcon serviceId={service.id} size={24} />
+                </div>
+                <h3 className="service-card__title">{service.title}</h3>
               </div>
-              <h3 className="service-card__title">{service.title}</h3>
               <p className="service-card__description">{service.description}</p>
-              <Link to="/leistungen" className="service-card__link">
+              <Link to={`/leistungen#${service.id}`} className="service-card__link">
                 Mehr erfahren →
               </Link>
             </article>

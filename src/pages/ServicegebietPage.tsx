@@ -1,5 +1,6 @@
 import { serviceAreas } from '../data/content'
 import { CtaSection } from '../components/sections/CtaSection'
+import { ServiceAreaMap } from '../components/sections/ServiceAreaMap'
 
 export function ServicegebietPage() {
   return (
@@ -22,6 +23,8 @@ export function ServicegebietPage() {
               </span>
             ))}
           </div>
+
+          <ServiceAreaMap />
         </div>
       </div>
       <CtaSection />

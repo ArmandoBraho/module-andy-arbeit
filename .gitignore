@@ -1,0 +1,10 @@
+﻿.env
+.env.local
+.idea/
+src/tmp/
+faq-chunk.txt
+_list-komplett.txt
+_search-andy.txt
+list-files.ps1
+list-files2.ps1
+node_modules/

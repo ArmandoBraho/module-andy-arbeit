@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { serviceAreas } from '../../data/content'
+import { ServiceAreaMap } from './ServiceAreaMap'
 
 type ServiceAreaSectionProps = {
   compact?: boolean
@@ -24,6 +25,8 @@ export function ServiceAreaSection({ compact = false }: ServiceAreaSectionProps)
             </span>
           ))}
         </div>
+
+        <ServiceAreaMap />
 
         {compact && (
           <div style={{ textAlign: 'center', marginTop: '2rem' }}>

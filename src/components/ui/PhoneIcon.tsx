@@ -24,3 +24,4 @@ export function PhoneIcon({ className = '', size = 18 }: IconProps) {
     </svg>
   )
 }
+
