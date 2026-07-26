@@ -3,10 +3,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { services } from '../../data/content'
 import { ServiceIcon } from '../ui/ServiceIcon'
 
-const AUTO_PLAY_MS = 7000
+const AUTO_PLAY_MS = 8000
 const USER_PAUSE_MS = 10000
 /** Set false while tuning image crops; re-enable for production. */
-const AUTO_PLAY_ENABLED = false
+const AUTO_PLAY_ENABLED = true
 
 type ServiceId = (typeof services)[number]['id']
 type GalleryItem = (typeof services)[number]['gallery'][number]
