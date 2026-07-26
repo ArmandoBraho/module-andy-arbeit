@@ -1,13 +1,21 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { services } from '../../data/content'
 import { ServiceIcon } from '../ui/ServiceIcon'
 
 const AUTO_PLAY_MS = 7000
 const USER_PAUSE_MS = 10000
+/** Set false while tuning image crops; re-enable for production. */
+const AUTO_PLAY_ENABLED = false
 
 type ServiceId = (typeof services)[number]['id']
 type GalleryItem = (typeof services)[number]['gallery'][number]
+type ObjectPositionValue =
+  | string
+  | {
+      mobile: string
+      desktop: string
+    }
 
 function getServiceIdFromHash(hash: string): ServiceId | null {
   const id = hash.replace(/^#/, '')
@@ -19,30 +27,47 @@ function getIndexForId(id: ServiceId): number {
   return index >= 0 ? index : 0
 }
 
-function getImageStyle(image: GalleryItem, mediaSide: 'left' | 'right') {
-  const raw =
-    'objectPosition' in image && typeof image.objectPosition === 'string'
-      ? image.objectPosition.trim()
-      : null
+function normalizePosition(raw: string, mediaSide: 'left' | 'right'): string {
+  const [x, y = 'center'] = raw.trim().split(/\s+/)
+  if (x.includes('%')) return `${x} ${y}`
+  return `${mediaSide} ${y}`
+}
 
-  if (raw) {
-    const [x, y = 'center'] = raw.split(/\s+/)
-    if (x.includes('%')) {
-      return {
-        objectFit: 'cover' as const,
-        objectPosition: `${x} ${y}`,
-      }
-    }
+function resolveObjectPositions(
+  value: ObjectPositionValue | undefined,
+  mediaSide: 'left' | 'right',
+): { mobile: string; desktop: string } {
+  const fallback = `${mediaSide} center`
 
-    return {
-      objectFit: 'cover' as const,
-      objectPosition: `${mediaSide} ${y}`,
-    }
+  if (!value) {
+    return { mobile: fallback, desktop: fallback }
+  }
+
+  if (typeof value === 'string') {
+    const position = normalizePosition(value, mediaSide)
+    return { mobile: position, desktop: position }
   }
 
   return {
-    objectFit: 'cover' as const,
-    objectPosition: `${mediaSide} center`,
+    mobile: normalizePosition(value.mobile, mediaSide),
+    desktop: normalizePosition(value.desktop, mediaSide),
+  }
+}
+
+/** Sets CSS vars so SCSS can switch focus per breakpoint. */
+function getImageStyle(image: GalleryItem, mediaSide: 'left' | 'right'): CSSProperties {
+  const raw =
+    'objectPosition' in image
+      ? (image.objectPosition as ObjectPositionValue | undefined)
+      : undefined
+  const { mobile, desktop } = resolveObjectPositions(raw, mediaSide)
+  const fit =
+    'objectFit' in image && image.objectFit === 'contain' ? 'contain' : 'cover'
+
+  return {
+    objectFit: fit,
+    ['--op-mobile' as string]: mobile,
+    ['--op-desktop' as string]: desktop,
   }
 }
 
@@ -70,7 +95,7 @@ export function LeistungenCarousel() {
   const location = useLocation()
   const navigate = useNavigate()
   const resumeTimeoutRef = useRef<number | undefined>(undefined)
-  const [autoPlay, setAutoPlay] = useState(true)
+  const [autoPlay, setAutoPlay] = useState(AUTO_PLAY_ENABLED)
   const [activeIndex, setActiveIndex] = useState(() =>
     getIndexForId(getServiceIdFromHash(location.hash) ?? services[0].id),
   )
@@ -82,6 +107,8 @@ export function LeistungenCarousel() {
   const hasMultipleImages = galleryLength > 1
 
   const pauseThenResume = useCallback(() => {
+    if (!AUTO_PLAY_ENABLED) return
+
     setAutoPlay(false)
 
     if (resumeTimeoutRef.current) {
@@ -231,10 +258,13 @@ export function LeistungenCarousel() {
                 ? 'leistungen-carousel__slide--media-left'
                 : 'leistungen-carousel__slide--media-right'
             const imageStyle = getImageStyle(image, mediaSide)
-            const textBgStyle = getImageStyle(
-              image,
-              mediaSide === 'left' ? 'right' : 'left',
-            )
+            const textBgStyle = {
+              ...getImageStyle(image, mediaSide === 'left' ? 'right' : 'left'),
+              // Text-column bleed always fills; only the main photo may use contain
+              objectFit: 'cover' as const,
+            }
+            const useContain =
+              'objectFit' in image && image.objectFit === 'contain'
 
             return (
               <article
@@ -254,7 +284,13 @@ export function LeistungenCarousel() {
                   <img
                     src={image.src}
                     alt={image.alt}
-                    className="leistungen-carousel__slide-image leistungen-carousel__slide-image--media"
+                    className={[
+                      'leistungen-carousel__slide-image',
+                      'leistungen-carousel__slide-image--media',
+                      useContain ? 'leistungen-carousel__slide-image--contain' : '',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
                     style={imageStyle}
                     draggable={false}
                   />
@@ -295,7 +331,7 @@ export function LeistungenCarousel() {
         </div>
 
         {hasMultipleImages && (
-          <>
+          <div className="leistungen-carousel__media-chrome">
             <div
               className="leistungen-carousel__image-dots"
               role="tablist"
@@ -337,7 +373,7 @@ export function LeistungenCarousel() {
             >
               <ChevronIcon direction="right" />
             </button>
-          </>
+          </div>
         )}
       </div>
     </div>
