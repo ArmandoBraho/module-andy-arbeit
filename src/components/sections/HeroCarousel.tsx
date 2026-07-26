@@ -98,7 +98,6 @@ export function HeroCarousel() {
           const slideClassName = [
             'hero-carousel__slide',
             isActive ? 'hero-carousel__slide--active' : '',
-            contentPosition === 'left' ? 'hero-carousel__slide--content-left' : '',
             contentPosition === 'right' ? 'hero-carousel__slide--content-right' : '',
             contentPosition === 'bottom' ? 'hero-carousel__slide--content-bottom' : '',
             `hero-carousel__slide--focus-${slide.focus}`,
