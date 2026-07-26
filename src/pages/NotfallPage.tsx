@@ -6,85 +6,52 @@ import { NotfallIcon } from '../components/ui/NotfallIcon'
 export function NotfallPage() {
   return (
     <div className="page page--notfall">
-      <div className="container">
-        <header className="page__header notfall-page__header">
+      <div className="container notfall-page">
+        <header className="notfall-page__header">
           <div className="notfall-page__eyebrow">
             <span className="notfall-page__eyebrow-badge" aria-hidden="true">
               <NotfallIcon size={16} />
             </span>
-            <span>24/7 Notdienst München</span>
+            <span>{notfallPage.eyebrow}</span>
           </div>
           <h1 className="page__title">{notfallPage.title}</h1>
-          <p className="page__intro">{notfallPage.intro}</p>
-        </header>
+          <p className="page__intro notfall-page__intro">{notfallPage.intro}</p>
 
-        <div className="notfall-page__grid">
-          <section className="notfall-panel" aria-labelledby="notfall-definition-title">
-            <h2 id="notfall-definition-title" className="notfall-panel__title">
-              {notfallPage.definitionTitle}
-            </h2>
-            <p className="notfall-panel__text">{notfallPage.definitionText}</p>
-
-            <h3 className="notfall-panel__subtitle">{notfallPage.examplesTitle}</h3>
-            <ul className="notfall-panel__list">
-              {notfallPage.examples.map((example) => (
-                <li key={example}>{example}</li>
-              ))}
-            </ul>
-
-            <div className="notfall-panel__note">
-              <p className="notfall-panel__note-title">{notfallPage.noEmergencyTitle}</p>
-              <p className="notfall-panel__note-text">{notfallPage.noEmergencyText}</p>
-              <Link to="/termin-anfragen" className="notfall-panel__note-link">
-                {notfallPage.noEmergencyCta}
-              </Link>
-            </div>
-          </section>
-
-          <section className="notfall-panel" aria-labelledby="notfall-availability-title">
-            <h2 id="notfall-availability-title" className="notfall-panel__title">
-              {notfallPage.availabilityTitle}
-            </h2>
-            <p className="notfall-panel__text">{notfallPage.availabilityText}</p>
-
-            <ul className="notfall-availability">
-              {notfallPage.availabilityItems.map((item) => (
-                <li key={item.title} className="notfall-availability__item">
-                  <span className="notfall-availability__marker" aria-hidden="true" />
-                  <div>
-                    <h3 className="notfall-availability__title">{item.title}</h3>
-                    <p className="notfall-availability__text">{item.text}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </section>
-        </div>
-
-        <section
-          className="notfall-cta"
-          aria-labelledby="notfall-cta-title"
-        >
-          <div className="notfall-cta__content">
-            <h2 id="notfall-cta-title" className="notfall-cta__title">
-              {notfallPage.ctaTitle}
-            </h2>
-            <p className="notfall-cta__text">{notfallPage.ctaText}</p>
-          </div>
-          <div className="notfall-cta__actions">
-            <Button href={site.phoneHref} variant="white">
-              {notfallPage.callLabel}
-            </Button>
+          <div className="notfall-page__actions">
             <Button
               href={whatsappEmergencyHref}
-              variant="secondary"
+              variant="primary"
               target="_blank"
               rel="noopener noreferrer"
             >
               {notfallPage.whatsappLabel}
             </Button>
+            <Button href={site.phoneHref} variant="secondary">
+              {notfallPage.callLabel}
+            </Button>
           </div>
+        </header>
+
+        <p className="notfall-page__hours">
+          <span className="notfall-page__hours-label">{notfallPage.availabilityLabel}:</span>{' '}
+          {notfallPage.availabilityItems.join(' · ')}
+        </p>
+
+        <section className="notfall-page__examples" aria-labelledby="notfall-examples-title">
+          <h2 id="notfall-examples-title" className="notfall-page__section-title">
+            {notfallPage.examplesTitle}
+          </h2>
+          <ul className="notfall-page__list">
+            {notfallPage.examples.map((example) => (
+              <li key={example}>{example}</li>
+            ))}
+          </ul>
         </section>
+
+        <p className="notfall-page__alt">
+          {notfallPage.noEmergencyText}{' '}
+          <Link to="/termin-anfragen">{notfallPage.noEmergencyCta}</Link>
+        </p>
       </div>
     </div>
   )

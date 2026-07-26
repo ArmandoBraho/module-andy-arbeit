@@ -99,44 +99,20 @@ export const emergencyContact = {
 
 export const notfallPage = {
   title: 'Soforthilfe bei Notfall',
-  intro:
-    'Bei akuten Rohr- und Abwasserproblemen zählt jede Minute. Rufen Sie uns an oder schreiben Sie uns per WhatsApp – wir helfen schnell und unkompliziert.',
-  definitionTitle: 'Was zählt als Notfall?',
-  definitionText:
-    'Ein Notfall liegt vor, wenn ein Abfluss- oder Rohrproblem nicht bis zu einem geplanten Termin warten kann und Folgeschäden drohen.',
-  examplesTitle: 'Typische Notfall-Beispiele',
+  eyebrow: 'Notdienst München · 17–22 Uhr',
+  intro: 'Akutes Rohr- oder Abwasserproblem? Sofort anrufen oder per WhatsApp melden.',
+  examplesTitle: 'Typische Notfälle',
   examples: [
-    'Rohrverstopfung mit Überlauf oder Wasser im Bad / Keller',
-    'Abfluss läuft nicht mehr ab und droht Folgeschäden',
-    'Rückstau, geruchsintensiver oder dringender Abwasser-Notfall',
-    'Probleme, die nicht bis zu einem geplanten Termin warten können',
+    'Verstopfung mit Überlauf oder Wasser im Bad / Keller',
+    'Abfluss läuft nicht mehr ab',
+    'Rückstau oder dringender Abwasser-Notfall',
   ],
-  noEmergencyTitle: 'Kein Notfall – besser Terminanfrage',
-  noEmergencyText:
-    'Bei Wartung, Reinigung oder Anliegen, die in den nächsten Tagen erledigt werden können, nutzen Sie bitte unsere Terminanfrage.',
-  noEmergencyCta: 'Zur Terminanfrage',
-  availabilityTitle: 'Wann ist der Notdienst erreichbar?',
-  availabilityText:
-    'Unser Notdienst ist auch außerhalb der üblichen Zeiten für Sie da – damit Sie bei akuten Problemen nicht warten müssen.',
-  availabilityItems: [
-    {
-      title: 'Abends ab 17 Uhr',
-      text: 'Abends und nachts erreichbar, wenn der Notfall nicht bis morgen warten kann.',
-    },
-    {
-      title: 'Wochenende',
-      text: 'Samstag und Sonntag – schnelle Hilfe ohne Wartezeit auf den Montag.',
-    },
-    {
-      title: 'Feiertage',
-      text: 'Auch an Feiertagen erreichbar – telefonisch und per WhatsApp.',
-    },
-  ],
-  ctaTitle: 'Jetzt Soforthilfe anfordern',
-  ctaText:
-    'Bitte warten Sie nicht auf eine Terminanfrage. Rufen Sie uns an oder schreiben Sie uns per WhatsApp.',
+  availabilityLabel: 'Erreichbar',
+  availabilityItems: ['Abends 17–22 Uhr', 'Wochenende', 'Feiertage'],
   callLabel: 'Jetzt anrufen',
-  whatsappLabel: 'Notdienst per WhatsApp',
+  whatsappLabel: 'WhatsApp Notdienst',
+  noEmergencyText: 'Kein Notfall?',
+  noEmergencyCta: 'Zur Terminanfrage',
 } as const
 
 export const socialLinks = [

@@ -1515,21 +1515,24 @@
 }
 
 .page--notfall {
-  background:
-    radial-gradient(ellipse 80% 50% at 100% 0%, rgba($color-error, 0.06), transparent 55%),
-    radial-gradient(ellipse 60% 40% at 0% 100%, rgba($color-primary, 0.05), transparent 50%),
-    $color-bg-alt;
+  min-height: 100%;
+  background: $color-bg;
+}
+
+.notfall-page {
+  max-width: 40rem;
+  padding-block: 2rem 3rem;
 }
 
 .notfall-page__header {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .notfall-page__eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.75rem;
   color: $color-error;
   font-weight: 700;
   font-size: 0.92rem;
@@ -1547,172 +1550,67 @@
   color: $color-error;
 }
 
-.notfall-page__grid {
-  display: grid;
-  gap: 1.25rem;
-  margin-bottom: 1.5rem;
+.notfall-page__intro {
+  margin-bottom: 1.35rem;
 }
 
-@media (min-width: $bp-lg) {
-  .notfall-page__grid {
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 1.5rem;
-    align-items: stretch;
-  }
-}
-
-.notfall-panel {
-  background: $color-bg;
-  border: 1px solid $color-border;
-  border-radius: $radius-lg;
-  padding: 1.5rem 1.4rem;
-  box-shadow: $shadow-sm;
-}
-
-.notfall-panel__title {
-  margin: 0 0 0.65rem;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: $color-text;
-}
-
-.notfall-panel__text {
-  margin: 0 0 1.15rem;
-  color: $color-text;
-  line-height: 1.6;
-}
-
-.notfall-panel__subtitle {
-  margin: 0 0 0.65rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: $color-text;
-}
-
-.notfall-panel__list {
-  margin: 0 0 1.35rem;
-  padding-left: 1.15rem;
-  display: grid;
-  gap: 0.55rem;
-  color: $color-text;
-  line-height: 1.5;
-}
-
-.notfall-panel__note {
-  padding: 1rem 1.05rem;
-  border-radius: $radius-md;
-  background: rgba($color-primary, 0.05);
-  border: 1px solid rgba($color-primary, 0.16);
-}
-
-.notfall-panel__note-title {
-  margin: 0 0 0.35rem;
-  font-weight: 600;
-  color: $color-primary-dark;
-}
-
-.notfall-panel__note-text {
-  margin: 0 0 0.65rem;
-  color: $color-text;
-  line-height: 1.5;
-  font-size: 0.95rem;
-}
-
-.notfall-panel__note-link {
-  color: $color-primary-dark;
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.notfall-availability {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.9rem;
-}
-
-.notfall-availability__item {
-  display: flex;
-  gap: 0.85rem;
-  align-items: flex-start;
-  padding: 0.9rem 0.95rem;
-  border-radius: $radius-md;
-  background: rgba($color-error, 0.04);
-  border: 1px solid rgba($color-error, 0.12);
-}
-
-.notfall-availability__marker {
-  flex-shrink: 0;
-  width: 0.65rem;
-  height: 0.65rem;
-  margin-top: 0.45rem;
-  border-radius: 999px;
-  background: $color-error;
-  box-shadow: 0 0 0 4px rgba($color-error, 0.15);
-}
-
-.notfall-availability__title {
-  margin: 0 0 0.25rem;
-  font-size: 1rem;
-  font-weight: 700;
-  color: $color-text;
-}
-
-.notfall-availability__text {
-  margin: 0;
-  color: $color-text;
-  line-height: 1.5;
-  font-size: 0.95rem;
-}
-
-.notfall-cta {
-  display: grid;
-  gap: 1.25rem;
-  padding: 1.6rem 1.5rem;
-  border-radius: $radius-lg;
-  background: linear-gradient(135deg, $color-primary-dark 0%, $color-primary 100%);
-  color: $color-text-inverse;
-  box-shadow: $shadow-md;
-}
-
-@media (min-width: $bp-md) {
-  .notfall-cta {
-    grid-template-columns: 1.4fr auto;
-    align-items: center;
-    padding: 1.85rem 1.75rem;
-  }
-}
-
-.notfall-cta__title {
-  margin: 0 0 0.5rem;
-  font-size: clamp(1.25rem, 2.5vw, 1.55rem);
-  font-weight: 700;
-  color: $color-text-inverse;
-}
-
-.notfall-cta__text {
-  margin: 0;
-  line-height: 1.55;
-  color: rgba($color-text-inverse, 0.95);
-  max-width: 38rem;
-}
-
-.notfall-cta__actions {
+.notfall-page__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
 
-.notfall-cta .btn--white,
-.notfall-cta .btn--secondary {
+.notfall-page__hours {
+  margin: 0 0 1.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: $radius-md;
+  background: $color-bg;
+  border: 1px solid $color-border;
   color: $color-text;
-  border-color: $color-text-inverse;
+  font-size: 0.95rem;
+  line-height: 1.45;
 }
 
-.notfall-cta .btn--secondary {
-  background: $color-text-inverse;
+.notfall-page__hours-label {
+  font-weight: 700;
+  color: $color-error;
+}
+
+.notfall-page__examples {
+  margin-bottom: 1.5rem;
+}
+
+.notfall-page__section-title {
+  margin: 0 0 0.65rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: $color-text;
+}
+
+.notfall-page__list {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.45rem;
+  color: $color-text;
+  line-height: 1.5;
+}
+
+.notfall-page__alt {
+  margin: 0;
+  color: $color-text-muted;
+  font-size: 0.95rem;
+}
+
+.notfall-page__alt a {
+  color: $color-primary-dark;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.notfall-page__alt a:hover {
+  color: $color-primary;
 }
 
 .appointment-steps__title {
