@@ -99,7 +99,7 @@ export const emergencyContact = {
 
 export const notfallPage = {
   title: 'Soforthilfe bei Notfall',
-  eyebrow: 'Notdienst München · 17–22 Uhr',
+  eyebrow: 'Notdienst München',
   intro: 'Akutes Rohr- oder Abwasserproblem? Sofort anrufen oder per WhatsApp melden.',
   examplesTitle: 'Typische Notfälle',
   examples: [
@@ -224,9 +224,9 @@ export const heroCarouselSlides = [
     src: '/photos/home-car.jpeg',
     srcMobile: '/photos/home-car.jpeg',
     alt: 'AndyArbeit Notdienst – mobil unterwegs in München und Umgebung',
-    title: '24/7 Notdienst',
+    title: 'Notdienst München',
     subtitle:
-      'Schnell erreichbar in München und Umgebung – auch abends, am Wochenende und an Feiertagen',
+      'Abends 17–22 Uhr, am Wochenende und an Feiertagen – schnell bei Ihnen vor Ort',
     contentPosition: 'bottom' as const,
     /** Branded car is the lead subject; keep Andy in frame too */
     focus: 'vehicle' as const,
