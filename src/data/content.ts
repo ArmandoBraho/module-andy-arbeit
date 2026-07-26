@@ -344,8 +344,8 @@ export const services = [
   {
     id: 'garten-landschaftspflege',
     title: 'Garten- & Landschaftspflege',
-    description: 'In Kooperation mit einem Meisterbetrieb',
-    body: 'Gepflegte Außenanlagen werten jedes Objekt auf. In Kooperation mit einem Meisterbetrieb unterstützen wir Sie bei der Garten- und Landschaftspflege – von der regelmäßigen Pflege bis zu saisonalen Arbeiten rund um Ihr Grundstück.',
+    description: 'Pflege von Grünflächen und Außenanlagen',
+    body: 'Gepflegte Außenanlagen werten jedes Objekt auf. Wir unterstützen Sie bei der Garten- und Landschaftspflege – von der regelmäßigen Pflege bis zu saisonalen Arbeiten rund um Ihr Grundstück.',
     gallery: [
       {
         src: '/photos/garten-landschaftspflege/andy-lawn-mower-portrait.jpeg',
@@ -496,13 +496,13 @@ export const faqs = [
     id: 'was-ist-notdienst',
     question: 'Was ist ein Notdienst bei der Rohrreinigung – und was ist dabei wichtig?',
     answer:
-      'Ein Rohrreinigungs-Notdienst ist die Soforthilfe bei akuten Abfluss- und Rohrproblemen: verstopftes WC, Rückstau, überlaufendes Wasser oder Gerüche, die nicht warten können. Bei AndyArbeit ist der Notdienst abends 17–22 Uhr sowie an Wochenenden und Feiertagen erreichbar und kommt möglichst schnell vor Ort, bevor Folgeschäden entstehen. Wichtig ist: echte Erreichbarkeit, kurze Anfahrt, fachgerechte Technik statt aggressiver Chemie und klare, transparente Kosten vor dem Einsatz. Ablauf und Kosten klären wir offen mit Ihnen ab.',
+      'Ein Rohrreinigungs-Notdienst ist die Soforthilfe bei akuten Abfluss- und Rohrproblemen: verstopftes WC, Rückstau, überlaufendes Wasser oder Gerüche, die nicht warten können. Bei AndyArbeit ist der Notdienst abends 17–22 Uhr sowie an Wochenenden und Feiertagen erreichbar und kommt möglichst schnell vor Ort, bevor Folgeschäden entstehen.',
   },
   {
     id: 'notfall-reaktionszeit',
     question: 'Wie schnell können Sie bei einem Notfall vor Ort sein?',
     answer:
-      'In Notfällen bemühen wir uns um eine möglichst kurze Anfahrt im Großraum München. Die genaue Zeit hängt von Verkehr, Uhrzeit und Einsatzort ab.',
+      'In Notfällen bemühen wir uns um eine möglichst kurze Anfahrt im Großraum München. In der Regel klappt das in circa 30–60 Minuten – die genaue Zeit hängt von Verkehr, Uhrzeit und Einsatzort ab.',
   },
   {
     id: 'einsatzgebiet',
