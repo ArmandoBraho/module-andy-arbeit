@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import { type MouseEvent } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { footerNavLinks, site, socialLinks } from '../../data/content'
 import { COOKIE_CONSENT_OPEN_EVENT } from '../../lib/cookieConsent'
 
@@ -35,13 +36,25 @@ const socialIcons = {
 } as const
 
 export function Footer() {
+  const location = useLocation()
   const currentYear = new Date().getFullYear()
+
+  const handleHomeClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (location.pathname !== '/') return
+    event.preventDefault()
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+  }
 
   return (
     <footer className="footer">
       <div className="container footer__grid">
         <div className="footer__brand">
-          <Link to="/" className="footer__logo-link" aria-label={`${site.name} – zur Startseite`}>
+          <Link
+            to="/"
+            className="footer__logo-link"
+            aria-label={`${site.name} – zur Startseite`}
+            onClick={handleHomeClick}
+          >
             <img src="/logoAndyVonLogoDesign.png" alt="AndyArbeit Logo" />
           </Link>
           <p>

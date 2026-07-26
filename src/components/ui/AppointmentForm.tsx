@@ -24,6 +24,7 @@ type FormData = {
   preferredDate: string
   preferredTime: string
   problemDescription: string
+  privacyConsent: boolean
 }
 
 type FormErrors = Partial<Record<keyof FormData, string>>
@@ -38,6 +39,7 @@ const initialData: FormData = {
   preferredDate: '',
   preferredTime: '',
   problemDescription: '',
+  privacyConsent: false,
 }
 
 const serviceOptions = services.map((service) => ({
@@ -157,6 +159,11 @@ function validate(data: FormData): FormErrors {
       'Bitte beschreiben Sie Ihr Anliegen (mindestens 10 Zeichen).'
   }
 
+  if (!data.privacyConsent) {
+    errors.privacyConsent =
+      'Bitte bestätigen Sie die Datenschutzerklärung, um fortzufahren.'
+  }
+
   return errors
 }
 
@@ -191,7 +198,7 @@ export function AppointmentForm({
       ? toTimeInputValue(minimumAppointmentDate)
       : undefined
 
-  const handleChange = (field: keyof FormData, value: string) => {
+  const handleChange = (field: keyof FormData, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }))
@@ -475,15 +482,40 @@ export function AppointmentForm({
         </div>
 
         <div className="contact-form__submit">
+          <label
+            className={`contact-form__consent${
+              errors.privacyConsent ? ' contact-form__consent--error' : ''
+            }`}
+            htmlFor="privacyConsent"
+          >
+            <input
+              id="privacyConsent"
+              type="checkbox"
+              className="contact-form__consent-input"
+              checked={formData.privacyConsent}
+              onChange={(event) =>
+                handleChange('privacyConsent', event.target.checked)
+              }
+            />
+            <span className="contact-form__consent-text">
+              Mit dem Absenden stimme ich der Verarbeitung meiner Daten gemäß der{' '}
+              <Link to="/datenschutz">Datenschutzerklärung</Link> zu.
+              <span className="form-field__required" aria-hidden="true">
+                {' '}
+                *
+              </span>
+            </span>
+          </label>
+          {errors.privacyConsent && (
+            <p className="form-field__error" role="alert">
+              {errors.privacyConsent}
+            </p>
+          )}
+
           <Button type="submit" variant="primary" block disabled={isSubmitting}>
             {isSubmitting ? 'Wird gesendet…' : 'Terminanfrage senden'}
           </Button>
         </div>
-
-        <p className="contact-form__privacy">
-          Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Daten gemäß unserer{' '}
-          <Link to="/datenschutz">Datenschutzerklärung</Link> zu.
-        </p>
       </form>
     </div>
   )

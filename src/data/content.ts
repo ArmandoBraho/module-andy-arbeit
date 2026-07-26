@@ -166,7 +166,7 @@ export const appointmentRequest = {
   changeChoice: 'Auswahl ändern',
   emergencyTitle: 'Soforthilfe bei Notfall',
   emergencyText:
-    'Bitte warten Sie nicht auf eine Terminanfrage. Rufen Sie uns an oder schreiben Sie uns per WhatsApp – wir sind rund um die Uhr erreichbar.',
+    'Bitte warten Sie nicht auf eine Terminanfrage. Rufen Sie uns an oder schreiben Sie uns per WhatsApp – unser Notdienst ist abends 17–22 Uhr sowie an Wochenenden und Feiertagen erreichbar.',
   emergencyCall: 'Jetzt anrufen',
   emergencyWhatsApp: 'Notdienst per WhatsApp',
   stepsTitle: 'So funktioniert die Terminanfrage',
@@ -241,7 +241,7 @@ export const hero = {
   description:
     'Vom Hausmeisterservice über Gebäudereinigung und Abwassertechnik bis hin zur Komplettsanierung bieten wir Ihnen umfassende Lösungen aus einer Hand.',
   usps: [
-    '24/7-Notdienst für Abwassertechnik',
+    'Notdienst Abwassertechnik: Abends 17–22 Uhr, Wochenende & Feiertage',
     'Haftpflichtversicherung für maximale Sicherheit',
     'Flexible Arbeitszeiten & schnelle Reaktion',
     'Langjährige Erfahrung und Kompetenz',
@@ -252,8 +252,8 @@ export const services = [
   {
     id: 'abwassertechnik',
     title: 'Abwassertechnik',
-    description: 'Rohrreinigung, Wartung (inkl. 24/7-Notdienst)',
-    body: 'Verstopfte Abflüsse und Rohrprobleme kommen selten gelegen – wir helfen schnell und zuverlässig. Ob Küchenleitung reinigen, klassische Rohrreinigung, Hochdruckspülung oder TV-Kamerauntersuchung: wir bieten professionelle Abwassertechnik für Haushalte, Gewerbe und Wohnanlagen. Unser Notdienst ist rund um die Uhr erreichbar.',
+    description: 'Rohrreinigung, Wartung (inkl. Notdienst)',
+    body: 'Verstopfte Abflüsse und Rohrprobleme kommen selten gelegen – wir helfen schnell und zuverlässig. Ob Küchenleitung reinigen, klassische Rohrreinigung, Hochdruckspülung oder TV-Kamerauntersuchung: wir bieten professionelle Abwassertechnik für Haushalte, Gewerbe und Wohnanlagen. Unser Notdienst ist abends 17–22 Uhr sowie an Wochenenden und Feiertagen erreichbar.',
     gallery: [
       {
         src: '/photos/abwassertechnik/andy-kitchen-pipe-cleaning.jpeg',
@@ -369,20 +369,6 @@ export const services = [
         objectPosition: { mobile: '50% 42%', desktop: '48% 48%' },
       },
       {
-        src: '/photos/garten-landschaftspflege/andy-lawn-mowing-front.jpeg',
-        alt: 'Rasenmähen vor dem Haus mit professionellem Gerät',
-        caption: 'Rasenpflege mit Profi-Gerät – zuverlässig und termingerecht.',
-        body: 'Regelmäßiges Mähen und Pflege halten Ihren Rasen und die Außenanlage gepflegt und einladend.',
-        objectPosition: { mobile: '50% 36%', desktop: '48% 40%' },
-      },
-      {
-        src: '/photos/garten-landschaftspflege/andy-hedge-scaffold-close.png',
-        alt: 'Heckenschnitt in der Höhe mit Arbeitsbühne und Profi-Gerät',
-        caption: 'Heckenschnitt in der Höhe – sicher und präzise mit der richtigen Technik.',
-        body: 'Auch hohe Hecken schneiden wir fachgerecht: mit Arbeitsbühne und Profi-Gerät für ein sauberes Ergebnis – ohne Risiko für Sie und Ihre Pflanze.',
-        objectPosition: { mobile: '50% 36%', desktop: '52% 40%' },
-      },
-      {
         src: '/photos/garten-landschaftspflege/andy-hedge-scaffold-lawn.png',
         alt: 'Professioneller Heckenschnitt auf dem Grundstück mit Rollgerüst',
         caption: 'Hohe Hecken im Griff – professionell und schonend für Ihr Grundstück.',
@@ -406,18 +392,18 @@ export const services = [
         objectPosition: { mobile: '50% 50%', desktop: '50% 50%' },
       },
       {
+        src: '/photos/gebaeudereinigung/andy-cleaning-equipment.jpeg',
+        alt: 'Professionelles Reinigungszubehör für die Gebäudereinigung',
+        caption: 'Saubere Innenräume – mit dem richtigen Equipment.',
+        body: 'Ob Büro, Gewerbe oder Treppenhaus: wir bringen Profi-Gerät mit und sorgen für gründliche, zuverlässige Reinigung.',
+        objectPosition: { mobile: '50% 45%', desktop: '50% 42%' },
+      },
+      {
         src: '/photos/gebaeudereinigung/andy-trimmer-blower.jpeg',
         alt: 'Reinigung und Pflege von Außenflächen',
         caption: 'Saubere Wege und Außenbereiche – auch rund ums Gebäude.',
         body: 'Wege, Einfahrten und Außenbereiche halten wir frei und gepflegt – für Bewohner und Besucherverkehr.',
         objectPosition: { mobile: '50% 36%', desktop: '48% 38%' },
-      },
-      {
-        src: '/photos/gebaeudereinigung/andy-driveway-trim.jpeg',
-        alt: 'Reinigung und Freischneiden von Pflasterflächen',
-        caption: 'Gepflegte Zufahrten und Gemeinschaftsflächen.',
-        body: 'Moos, Unkraut und Verschmutzungen an Pflaster und Zufahrt entfernen wir zuverlässig und sauber.',
-        objectPosition: { mobile: '55% 38%', desktop: '60% 40%' },
       },
     ],
   },
@@ -451,9 +437,9 @@ export const whyUs = [
       'Für Ihre Sicherheit sind wir haftpflichtversichert – professionell und verantwortungsvoll.',
   },
   {
-    title: '24h Notdienst für Abwassertechnik',
+    title: 'Notdienst für Abwassertechnik',
     description:
-      'Bei Rohrproblemen sind wir rund um die Uhr erreichbar – Tag und Nacht.',
+      'Bei Rohrproblemen sind wir abends 17–22 Uhr sowie an Wochenenden und Feiertagen erreichbar.',
   },
 ] as const
 
@@ -510,13 +496,13 @@ export const faqs = [
     id: 'was-ist-notdienst',
     question: 'Was ist ein Notdienst bei der Rohrreinigung – und was ist dabei wichtig?',
     answer:
-      'Ein Rohrreinigungs-Notdienst ist die Soforthilfe bei akuten Abfluss- und Rohrproblemen: verstopftes WC, Rückstau, überlaufendes Wasser oder Gerüche, die nicht warten können. Der Notdienst ist rund um die Uhr erreichbar – auch nachts, am Wochenende und an Feiertagen – und kommt schnell vor Ort, bevor Folgeschäden entstehen. Wichtig ist: echte Erreichbarkeit (kein reiner Anrufbeantworter), kurze Anfahrt, fachgerechte Technik statt aggressiver Chemie, und klare, transparente Kosten vor dem Einsatz. Bei AndyArbeit sind wir im Großraum München in der Regel innerhalb von 30–60 Minuten bei Ihnen und klären den Ablauf und die Kosten offen mit Ihnen ab.',
+      'Ein Rohrreinigungs-Notdienst ist die Soforthilfe bei akuten Abfluss- und Rohrproblemen: verstopftes WC, Rückstau, überlaufendes Wasser oder Gerüche, die nicht warten können. Bei AndyArbeit ist der Notdienst abends 17–22 Uhr sowie an Wochenenden und Feiertagen erreichbar und kommt möglichst schnell vor Ort, bevor Folgeschäden entstehen. Wichtig ist: echte Erreichbarkeit, kurze Anfahrt, fachgerechte Technik statt aggressiver Chemie und klare, transparente Kosten vor dem Einsatz. Ablauf und Kosten klären wir offen mit Ihnen ab.',
   },
   {
     id: 'notfall-reaktionszeit',
     question: 'Wie schnell können Sie bei einem Notfall vor Ort sein?',
     answer:
-      'In Notfällen sind wir in der Regel innerhalb von 30–60 Minuten bei Ihnen vor Ort im Großraum München.',
+      'In Notfällen bemühen wir uns um eine möglichst kurze Anfahrt im Großraum München. Die genaue Zeit hängt von Verkehr, Uhrzeit und Einsatzort ab.',
   },
   {
     id: 'einsatzgebiet',
@@ -528,7 +514,7 @@ export const faqs = [
     id: 'wartungsvertraege',
     question: 'Bieten Sie Wartungsverträge an?',
     answer:
-      'Ja. Wir bieten maßgeschneiderte Wartungsverträge für Immobilien jeder Größe an – mit regelmäßigen Inspektionen und Wartungsarbeiten.',
+      'Ja. Wir bieten maßgeschneiderte Wartungsverträge für viele Objektgrößen an – mit regelmäßigen Inspektionen und Wartungsarbeiten.',
   },
   {
     id: 'preise',
@@ -541,7 +527,7 @@ export const faqs = [
 export const cta = {
   title: 'Sie benötigen schnelle Hilfe?',
   description:
-    'Wir sind für Sie erreichbar, damit Sie jederzeit die Unterstützung erhalten, die Sie benötigen. Egal ob Tag oder Nacht, wir stehen bereit, um Ihre Anliegen schnell und zuverlässig zu erledigen.',
+    'Wir sind für Sie erreichbar – auch abends 17–22 Uhr sowie an Wochenenden und Feiertagen –, damit Sie die Unterstützung erhalten, die Sie brauchen. Wir stehen bereit, um Ihre Anliegen schnell und zuverlässig zu erledigen.',
 } as const
 
 export const about = {

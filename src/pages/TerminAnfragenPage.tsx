@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { appointmentRequest, services } from '../data/content'
 import { AppointmentForm } from '../components/ui/AppointmentForm'
@@ -20,7 +20,6 @@ export function TerminAnfragenPage() {
     preselectedService ? 'appointment' : null,
   )
   const [openTip, setOpenTip] = useState<number | null>(null)
-  const stepsRef = useRef<HTMLOListElement>(null)
 
   useEffect(() => {
     if (preselectedService) {
@@ -32,7 +31,12 @@ export function TerminAnfragenPage() {
     if (openTip === null) return
 
     const handlePointerDown = (event: MouseEvent) => {
-      if (!stepsRef.current?.contains(event.target as Node)) {
+      const target = event.target
+      if (!(target instanceof Node)) return
+
+      const tooltip = document.getElementById(`appointment-step-tip-${openTip}`)
+      const tipWrap = tooltip?.closest('.appointment-step__tip')
+      if (tipWrap && !tipWrap.contains(target)) {
         setOpenTip(null)
       }
     }
@@ -123,7 +127,7 @@ export function TerminAnfragenPage() {
                 </button>
               </div>
 
-              <ol ref={stepsRef} className="appointment-steps appointment-steps--compact">
+              <ol className="appointment-steps appointment-steps--compact">
                 {appointmentRequest.steps.map((step, index) => {
                   const isOpen = openTip === index
 

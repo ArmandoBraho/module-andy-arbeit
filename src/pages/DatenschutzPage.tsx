@@ -5,11 +5,11 @@ export function DatenschutzPage() {
     <div className="page">
       <div className="container legal-content">
         {/*
-          LAWYER REVIEW: This text is drafted from the live codebase (Impressum,
-          AppointmentForm/Web3Forms, WhatsApp wa.me links, self-hosted Inter fonts,
-          Leaflet + OpenStreetMap tiles, unpkg marker assets). Confirm hosting provider,
-          Web3Forms processing location / DPA, retention periods, and whether a
-          Datenschutzbeauftragter is required. Not legal advice.
+          LAWYER REVIEW: Drafted from the live codebase (Impressum, Web3Forms,
+          WhatsApp, self-hosted Inter, consent-gated Leaflet/OSM map). Confirm
+          Web3Forms AVV/DPA, retention periods, and whether a
+          Datenschutzbeauftragter is required. Hosting: Cloudflare (confirmed).
+          Not legal advice.
         */}
         <header className="page__header">
           <h1 className="page__title">Datenschutzerklärung</h1>
@@ -153,7 +153,11 @@ export function DatenschutzPage() {
         </p>
         <p>
           Zweck: Bearbeitung Ihrer Terminanfrage, Kontaktaufnahme und
-          Terminabstimmung. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.
+          Terminabstimmung. Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO
+          (Einwilligung über die Checkbox am Formular) sowie Art. 6 Abs. 1 lit. b
+          DSGVO (vorvertragliche Maßnahmen). Die Einwilligung können Sie jederzeit
+          mit Wirkung für die Zukunft widerrufen (z.&nbsp;B. per E-Mail an{' '}
+          <a href={site.emailHref}>{site.email}</a>).
         </p>
         <p>
           Web3Forms verarbeitet die Übermittlung als Auftragsverarbeiter bzw.
@@ -229,21 +233,26 @@ export function DatenschutzPage() {
         <h2>8. Karte: Leaflet und OpenStreetMap</h2>
         <p>
           Auf Seiten mit Servicegebiet-Darstellung (u. a. Startseite /
-          Servicegebiet) zeigen wir eine interaktive Karte mit der Bibliothek{' '}
-          <strong>Leaflet</strong>. Die Kartenkacheln werden von{' '}
+          Servicegebiet) können wir eine interaktive Karte mit der Bibliothek{' '}
+          <strong>Leaflet</strong> anzeigen. Die Kartenkacheln werden von{' '}
           <strong>OpenStreetMap</strong> geladen (
           <code>tile.openstreetmap.org</code>). Marker-Grafiken können von{' '}
           <code>unpkg.com</code> (Leaflet-Assets) nachgeladen werden.
         </p>
         <p>
-          Beim Anzeigen der Karte stellt Ihr Browser Verbindungen zu den
-          genannten Diensten her. Dabei können insbesondere Ihre IP-Adresse sowie
-          technische Abrufdaten verarbeitet werden. OpenStreetMap Foundation /
-          die Tile-Server betreiben die Karteninfrastruktur nach eigenen Regeln.
+          Die Karte wird{' '}
+          <strong>erst nach Ihrer Einwilligung</strong> geladen („Externe
+          Inhalte (Karte)“ im Cookie-Hinweis bzw. Schaltfläche „Karte laden“).
+          Ohne Einwilligung stellen wir keine Verbindung zu OpenStreetMap oder
+          unpkg her. Nach Einwilligung kann Ihr Browser beim Laden der Karte
+          insbesondere Ihre IP-Adresse sowie technische Abrufdaten an die
+          genannten Dienste übermitteln.
         </p>
         <p>
           Zweck: Visualisierung unseres Einsatzgebiets. Rechtsgrundlage: Art. 6
-          Abs. 1 lit. f DSGVO. Hinweise der OpenStreetMap Foundation:{' '}
+          Abs. 1 lit. a DSGVO (Einwilligung). Sie können die Einwilligung
+          jederzeit über „Cookie-Einstellungen“ im Fußbereich widerrufen.
+          Hinweise der OpenStreetMap Foundation:{' '}
           <a
             href="https://wiki.osmfoundation.org/wiki/Privacy_Policy"
             target="_blank"
@@ -252,7 +261,6 @@ export function DatenschutzPage() {
             Privacy Policy (OSMF)
           </a>
         </p>
-        {/* LAWYER REVIEW: Codebase still mentions VITE_GOOGLE_MAPS_API_KEY in .env.example, but the live map uses Leaflet/OSM – do not claim Google Maps unless re-enabled. */}
 
         <h2>9. Telefon und E-Mail</h2>
         <p>
@@ -298,10 +306,10 @@ export function DatenschutzPage() {
 
         <h2>12. Cookies und Tracking</h2>
         <p>
-          Beim ersten Besuch zeigen wir einen Hinweis zu Cookies. Technisch
-          notwendige Speichervorgänge (z.&nbsp;B. Speicherung Ihrer
-          Cookie-Auswahl im lokalen Speicher des Browsers) sind für den Betrieb
-          der Website erforderlich.
+          Beim ersten Besuch zeigen wir einen Hinweis zu Cookies / optionalen
+          Inhalten. Technisch notwendige Speichervorgänge (z.&nbsp;B.
+          Speicherung Ihrer Auswahl im lokalen Speicher des Browsers) sind für
+          den Betrieb der Website erforderlich.
         </p>
         <p>
           Optionale Statistik-Funktionen werden nur ausgeführt, wenn Sie dem
@@ -309,12 +317,17 @@ export function DatenschutzPage() {
           lokal im Browser Informationen zu Sitzungen (Anzahl) und
           Sitzungsdauer. Ein neuer Besuch nach längerer Pause (ca. 30 Minuten)
           gilt als neue Sitzung. Die Auswertung bleibt auf Ihrem Gerät, sofern
-          kein gesonderter Analyse-Endpunkt konfiguriert ist. Sie können Ihre
-          Auswahl jederzeit über „Cookie-Einstellungen“ im Fußbereich ändern
-          oder widerrufen; danach wird keine neue Statistik mehr erfasst.
+          kein gesonderter Analyse-Endpunkt konfiguriert ist.
         </p>
         <p>
-          Marketing-Cookies setzen wir derzeit nicht ein.
+          Die interaktive Servicegebiet-Karte (OpenStreetMap / Leaflet-Assets)
+          laden wir nur mit Einwilligung in „Externe Inhalte (Karte)“ bzw. nach
+          bewusstem Klick auf „Karte laden“. Details siehe Abschnitt 8.
+        </p>
+        <p>
+          Sie können Ihre Auswahl jederzeit über „Cookie-Einstellungen“ im
+          Fußbereich ändern oder widerrufen. Marketing-Cookies setzen wir
+          derzeit nicht ein.
         </p>
 
         <h2>13. Keine automatisierte Entscheidungsfindung</h2>

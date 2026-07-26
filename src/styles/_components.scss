@@ -230,6 +230,41 @@
 
 .contact-form__submit {
   margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.contact-form__consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: $color-text-muted;
+  cursor: pointer;
+}
+
+.contact-form__consent--error {
+  color: $color-error;
+}
+
+.contact-form__consent-input {
+  flex-shrink: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.15rem;
+  accent-color: $color-primary;
+  cursor: pointer;
+}
+
+.contact-form__consent-text a {
+  color: $color-primary;
+  text-decoration: underline;
+}
+
+.contact-form--themed .contact-form__consent-text a {
+  color: var(--appointment-accent, #{$color-primary});
 }
 
 .contact-form__privacy {
@@ -989,6 +1024,48 @@
   border: 0;
 }
 
+.service-area-map--blocked {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: min(55vh, 28rem);
+  background:
+    linear-gradient(160deg, rgba($color-primary, 0.06), transparent 55%),
+    $color-bg-alt;
+}
+
+.service-area-map__placeholder {
+  max-width: 34rem;
+  margin: 1.5rem;
+  padding: 1.35rem 1.4rem;
+  border-radius: $radius-md;
+  background: $color-bg;
+  border: 1px solid $color-border;
+  box-shadow: $shadow-sm;
+  text-align: center;
+}
+
+.service-area-map__placeholder-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $color-text;
+}
+
+.service-area-map__placeholder-text {
+  margin: 0 0 1.15rem;
+  color: $color-text-muted;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.service-area-map__placeholder-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: center;
+}
+
 /* Keep Leaflet pane z-indexes (200–700) inside the map, not above the header */
 .service-area-map .leaflet-container {
   z-index: 0;
@@ -1589,11 +1666,29 @@
 
 .notfall-page__list {
   margin: 0;
-  padding-left: 1.15rem;
+  padding-left: 0;
   display: grid;
   gap: 0.45rem;
+  list-style: none;
   color: $color-text;
   line-height: 1.5;
+}
+
+.notfall-page__list li {
+  position: relative;
+  padding-left: 1.15rem;
+}
+
+.notfall-page__list li::before {
+  content: '';
+  position: absolute;
+  left: 0.2rem;
+  top: 0.65em;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translateY(-50%);
 }
 
 .notfall-page__alt {
@@ -2535,6 +2630,65 @@
   box-shadow: none;
 }
 
+/* Mobile: no nested text scroll — slide grows so CTA stays in page flow */
+@media (max-width: #{$bp-md - 1px}) {
+  .leistungen-carousel--viewport {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  .layout--overlay-hero .leistungen-carousel--viewport {
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  .leistungen-carousel--viewport .leistungen-carousel__stage {
+    flex: none;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .leistungen-carousel--viewport .leistungen-carousel__slides {
+    height: auto;
+  }
+
+  .leistungen-carousel--viewport .leistungen-carousel__slide {
+    position: absolute;
+    inset: 0;
+    height: auto;
+    min-height: 100%;
+    overflow: visible;
+  }
+
+  .leistungen-carousel--viewport .leistungen-carousel__slide--active {
+    position: relative;
+    inset: auto;
+    height: auto;
+    min-height: 0;
+  }
+
+  .leistungen-carousel--viewport .leistungen-carousel__media {
+    max-height: min(40dvh, 22rem);
+  }
+
+  .leistungen-carousel--viewport .leistungen-carousel__text {
+    overflow: visible;
+    overflow-y: visible;
+    min-height: auto;
+    /* Room for FABs, but keep CTA in normal flow below copy */
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .leistungen-carousel--viewport .leistungen-carousel__cta {
+    margin-top: 1rem;
+    width: 100%;
+    max-width: 16rem;
+    justify-content: center;
+  }
+}
+
 @media (min-width: $bp-md) {
   .leistungen-carousel--viewport .leistungen-carousel__media {
     aspect-ratio: auto;
@@ -2747,6 +2901,40 @@
 
   .leistungen-carousel--viewport .leistungen-carousel__arrow--next {
     right: 1rem;
+  }
+}
+
+/* Mobile: pin arrows/dots to the photo frame only (image + text are stacked) */
+@media (max-width: #{$bp-md - 1px}) {
+  .leistungen-carousel--viewport .leistungen-carousel__media-chrome {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    max-height: min(40dvh, 22rem);
+  }
+
+  .leistungen-carousel--viewport .leistungen-carousel__image-dots {
+    left: 50%;
+    right: auto;
+    bottom: 0.75rem;
+    transform: translateX(-50%);
+  }
+
+  .leistungen-carousel--viewport .leistungen-carousel__arrow {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .leistungen-carousel--viewport .leistungen-carousel__arrow--prev {
+    left: 0.65rem;
+  }
+
+  .leistungen-carousel--viewport .leistungen-carousel__arrow--next {
+    right: 0.65rem;
   }
 }
 
@@ -3069,11 +3257,11 @@
   /* Only constrain the photo frame in the stacked (mobile) layout */
   @media (max-width: #{$bp-md - 1px}) {
     .leistungen-carousel--viewport .leistungen-carousel__media {
-      max-height: min(46dvh, 24rem);
+      max-height: min(36dvh, 20rem);
     }
 
     .leistungen-carousel--viewport .leistungen-carousel__media-chrome {
-      max-height: min(46dvh, 24rem);
+      max-height: min(36dvh, 20rem);
     }
   }
 

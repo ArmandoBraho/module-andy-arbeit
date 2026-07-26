@@ -1,10 +1,17 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import {
   serviceAreaLocations,
   serviceAreaPolygon,
 } from '../../data/serviceAreaMap'
+import {
+  COOKIE_CONSENT_EVENT,
+  hasExternalContentConsent,
+  openCookieSettings,
+  readCookieConsent,
+  writeCookieConsent,
+} from '../../lib/cookieConsent'
 
 const DefaultIcon = L.icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -19,8 +26,23 @@ const DefaultIcon = L.icon({
 export function ServiceAreaMap() {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<L.Map | null>(null)
+  const [allowed, setAllowed] = useState(() => hasExternalContentConsent())
 
   useEffect(() => {
+    const sync = () => setAllowed(hasExternalContentConsent())
+    window.addEventListener(COOKIE_CONSENT_EVENT, sync)
+    return () => window.removeEventListener(COOKIE_CONSENT_EVENT, sync)
+  }, [])
+
+  useEffect(() => {
+    if (!allowed) {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove()
+        mapInstanceRef.current = null
+      }
+      return
+    }
+
     const container = containerRef.current
     if (!container || mapInstanceRef.current) return
 
@@ -61,7 +83,46 @@ export function ServiceAreaMap() {
       map.remove()
       mapInstanceRef.current = null
     }
-  }, [])
+  }, [allowed])
+
+  const enableMap = () => {
+    const existing = readCookieConsent()
+    writeCookieConsent({
+      statistics: existing?.statistics ?? false,
+      externalContent: true,
+    })
+  }
+
+  if (!allowed) {
+    return (
+      <div className="service-area-map service-area-map--blocked">
+        <div className="service-area-map__placeholder">
+          <p className="service-area-map__placeholder-title">Interaktive Karte</p>
+          <p className="service-area-map__placeholder-text">
+            Zur Anzeige werden Kartenkacheln von OpenStreetMap und Marker-Grafiken
+            von einem CDN geladen. Dabei kann Ihre IP-Adresse an diese Anbieter
+            übermittelt werden.
+          </p>
+          <div className="service-area-map__placeholder-actions">
+            <button
+              type="button"
+              className="btn btn--primary"
+              onClick={enableMap}
+            >
+              Karte laden
+            </button>
+            <button
+              type="button"
+              className="btn btn--secondary"
+              onClick={openCookieSettings}
+            >
+              Einstellungen
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="service-area-map">

@@ -10,6 +10,7 @@ export function CookieConsent() {
   const titleId = useId()
   const [visible, setVisible] = useState(false)
   const [statistics, setStatistics] = useState(false)
+  const [externalContent, setExternalContent] = useState(false)
 
   useEffect(() => {
     const existing = readCookieConsent()
@@ -18,12 +19,14 @@ export function CookieConsent() {
       return
     }
     setStatistics(existing.statistics)
+    setExternalContent(existing.externalContent)
   }, [])
 
   useEffect(() => {
     const openSettings = () => {
       const existing = readCookieConsent()
       setStatistics(existing?.statistics ?? false)
+      setExternalContent(existing?.externalContent ?? false)
       setVisible(true)
     }
     window.addEventListener(COOKIE_CONSENT_OPEN_EVENT, openSettings)
@@ -34,9 +37,10 @@ export function CookieConsent() {
 
   if (!visible) return null
 
-  const save = (nextStatistics: boolean) => {
-    writeCookieConsent(nextStatistics)
-    setStatistics(nextStatistics)
+  const save = (next: { statistics: boolean; externalContent: boolean }) => {
+    writeCookieConsent(next)
+    setStatistics(next.statistics)
+    setExternalContent(next.externalContent)
     setVisible(false)
   }
 
@@ -53,11 +57,10 @@ export function CookieConsent() {
             Cookies & Datenschutz
           </h2>
           <p className="cookie-consent__text">
-            Wir verwenden technisch notwendige Cookies, damit die Website
-            funktioniert. Optionale Statistik-Cookies helfen uns später zu
-            verstehen, wie oft und wie lange die Seite genutzt wird – erst nach
-            Ihrer Einwilligung. Mehr in der{' '}
-            <Link to="/datenschutz">Datenschutzerklärung</Link>.
+            Wir verwenden technisch notwendige Speicherung, damit die Website
+            funktioniert. Optionale Statistik und die interaktive Karte
+            (OpenStreetMap) starten wir erst nach Ihrer Einwilligung. Mehr in
+            der <Link to="/datenschutz">Datenschutzerklärung</Link>.
           </p>
 
           <label className="cookie-consent__option">
@@ -83,27 +86,42 @@ export function CookieConsent() {
               </span>
             </span>
           </label>
+
+          <label className="cookie-consent__option">
+            <input
+              type="checkbox"
+              checked={externalContent}
+              onChange={(event) => setExternalContent(event.target.checked)}
+            />
+            <span>
+              <strong>Externe Inhalte (Karte)</strong>
+              <span className="cookie-consent__option-hint">
+                Optional – lädt Kartenkacheln von OpenStreetMap und
+                Marker-Grafiken (Drittanbieter)
+              </span>
+            </span>
+          </label>
         </div>
 
         <div className="cookie-consent__actions">
           <button
             type="button"
             className="cookie-consent__btn cookie-consent__btn--ghost"
-            onClick={() => save(false)}
+            onClick={() => save({ statistics: false, externalContent: false })}
           >
             Nur notwendige
           </button>
           <button
             type="button"
             className="cookie-consent__btn cookie-consent__btn--secondary"
-            onClick={() => save(statistics)}
+            onClick={() => save({ statistics, externalContent })}
           >
             Auswahl speichern
           </button>
           <button
             type="button"
             className="cookie-consent__btn cookie-consent__btn--primary"
-            onClick={() => save(true)}
+            onClick={() => save({ statistics: true, externalContent: true })}
           >
             Alle akzeptieren
           </button>

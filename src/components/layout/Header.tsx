@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type MouseEvent } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { emergencyContact, navLinks } from '../../data/content'
 import { NotfallIcon } from '../ui/NotfallIcon'
@@ -13,6 +13,18 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
 
   const closeMenu = () => setMenuOpen(false)
+
+  const scrollToPageTop = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+  }
+
+  const handleHomeClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    closeMenu()
+    if (location.pathname !== '/') return
+    event.preventDefault()
+    scrollToPageTop()
+  }
+
   const isOverlay = hasOverlayHero && !isScrolled && !menuOpen
 
   useEffect(() => {
@@ -46,7 +58,7 @@ export function Header() {
   return (
     <header className={headerClassName}>
       <div className="container header__inner">
-        <Link to="/" className="header__logo" onClick={closeMenu}>
+        <Link to="/" className="header__logo" onClick={handleHomeClick}>
           <img
             src="/logoAndyVonLogoDesign.png"
             alt="AndyArbeit München"
@@ -63,6 +75,7 @@ export function Header() {
               className={({ isActive }) =>
                 `header__link${isActive ? ' header__link--active' : ''}`
               }
+              onClick={link.path === '/' ? handleHomeClick : undefined}
             >
               {link.label}
             </NavLink>
@@ -111,7 +124,7 @@ export function Header() {
             className={({ isActive }) =>
               `header__mobile-link${isActive ? ' header__mobile-link--active' : ''}`
             }
-            onClick={closeMenu}
+            onClick={link.path === '/' ? handleHomeClick : closeMenu}
           >
             {link.label}
           </NavLink>
