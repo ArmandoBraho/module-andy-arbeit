@@ -312,6 +312,13 @@ export const services = [
     body: 'Bei Sanierungsprojekten koordinieren wir die wichtigsten Gewerke aus einer Hand. In Kooperation mit einem Meisterbetrieb unterstützen wir Sie bei Elektrik, Gas/Wasser, Abrissarbeiten und weiteren Maßnahmen – von der Planung bis zur sauberen Umsetzung.',
     gallery: [
       {
+        src: '/photos/komplettsanierung/andy-garden-work.jpeg',
+        alt: 'Körperliche Arbeiten und Vorbereitung auf dem Grundstück',
+        caption: 'Vorbereitung und Umsetzung – handwerklich und zuverlässig.',
+        body: 'Von Abriss bis Aufbau: wir packen mit an und halten die Baustelle für Sie im Griff.',
+        objectPosition: { mobile: '55% 42%', desktop: '68% 55%' },
+      },
+      {
         src: '/photos/komplettsanierung/andy-renovation-interior.jpeg',
         alt: 'Innenausbau bei der Komplettsanierung mit Bodenschutz und Einbauten',
         caption: 'Innenausbau – sauber geschützt und professionell umgesetzt.',
@@ -324,13 +331,6 @@ export const services = [
         caption: 'Rohbau und Leitungen – die Basis für eine moderne Sanierung.',
         body: 'Wir bereiten Wände und Leitungswege für Elektrik, Gas und Wasser vor – abgestimmt mit dem Meisterbetrieb, damit die Sanierung auf einem soliden Fundament steht.',
         objectPosition: { mobile: '50% 40%', desktop: '48% 42%' },
-      },
-      {
-        src: '/photos/komplettsanierung/andy-garden-work.jpeg',
-        alt: 'Körperliche Arbeiten und Vorbereitung auf dem Grundstück',
-        caption: 'Vorbereitung und Umsetzung – handwerklich und zuverlässig.',
-        body: 'Von Abriss bis Aufbau: wir packen mit an und halten die Baustelle für Sie im Griff.',
-        objectPosition: { mobile: '55% 42%', desktop: '68% 55%' },
       },
     ],
   },
@@ -372,6 +372,13 @@ export const services = [
     body: 'Gepflegte Außenanlagen werten jedes Objekt auf. In Kooperation mit einem Meisterbetrieb unterstützen wir Sie bei der Garten- und Landschaftspflege – von der regelmäßigen Pflege bis zu saisonalen Arbeiten rund um Ihr Grundstück.',
     gallery: [
       {
+        src: '/photos/garten-landschaftspflege/andy-lawn-mower-portrait.jpeg',
+        alt: 'AndyArbeit bei der Rasenpflege mit professionellem Gerät',
+        caption: 'Saubere Außenanlagen – mit Profi-Gerät und klarer Handschrift.',
+        body: 'Gemeinsam mit erfahrenen Partnern halten wir Grünflächen und Außenbereiche gepflegt und einladend.',
+        objectPosition: { mobile: '45% 38%', desktop: '42% 62%' },
+      },
+      {
         src: '/photos/garten-landschaftspflege/andy-hedge-trimming.jpeg',
         alt: 'Heckenschnitt und Gartenpflege durch AndyArbeit',
         caption: 'Professioneller Heckenschnitt – sauber und mit dem richtigen Gerät.',
@@ -384,13 +391,6 @@ export const services = [
         caption: 'Rasenpflege – persönlich und zuverlässig vor Ort.',
         body: 'Ob Rasen oder saisonale Arbeiten: wir kümmern uns persönlich und zuverlässig um Ihre Außenanlagen.',
         objectPosition: { mobile: '50% 42%', desktop: '48% 48%' },
-      },
-      {
-        src: '/photos/garten-landschaftspflege/andy-lawn-mower-portrait.jpeg',
-        alt: 'AndyArbeit bei der Rasenpflege mit professionellem Gerät',
-        caption: 'Saubere Außenanlagen – mit Profi-Gerät und klarer Handschrift.',
-        body: 'Gemeinsam mit erfahrenen Partnern halten wir Grünflächen und Außenbereiche gepflegt und einladend.',
-        objectPosition: { mobile: '45% 38%', desktop: '42% 62%' },
       },
       {
         src: '/photos/garten-landschaftspflege/andy-lawn-mowing-front.jpeg',
