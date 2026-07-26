@@ -120,7 +120,7 @@ export const notfallPage = {
     'Unser Notdienst ist auch außerhalb der üblichen Zeiten für Sie da – damit Sie bei akuten Problemen nicht warten müssen.',
   availabilityItems: [
     {
-      title: 'Nacht ab 17:00',
+      title: 'Abends ab 17 Uhr',
       text: 'Abends und nachts erreichbar, wenn der Notfall nicht bis morgen warten kann.',
     },
     {
@@ -277,8 +277,15 @@ export const services = [
     id: 'abwassertechnik',
     title: 'Abwassertechnik',
     description: 'Rohrreinigung, Wartung (inkl. 24/7-Notdienst)',
-    body: 'Verstopfte Abflüsse und Rohrprobleme kommen selten gelegen – wir helfen schnell und zuverlässig. Von der klassischen Rohrreinigung über die Hochdruckspülung bis zur TV-Kamerauntersuchung bieten wir professionelle Abwassertechnik für Haushalte, Gewerbe und Wohnanlagen. Unser Notdienst ist rund um die Uhr erreichbar.',
+    body: 'Verstopfte Abflüsse und Rohrprobleme kommen selten gelegen – wir helfen schnell und zuverlässig. Ob Küchenleitung reinigen, klassische Rohrreinigung, Hochdruckspülung oder TV-Kamerauntersuchung: wir bieten professionelle Abwassertechnik für Haushalte, Gewerbe und Wohnanlagen. Unser Notdienst ist rund um die Uhr erreichbar.',
     gallery: [
+      {
+        src: '/photos/abwassertechnik/andy-kitchen-pipe-cleaning.jpeg',
+        alt: 'Rohrreinigung der Küchenleitung mit Spirale unter der Spüle',
+        caption: 'Küchenleitung reinigen – schnell und ohne große Baustelle.',
+        body: 'Verstopfte Küchenabflüsse lösen wir vor Ort mit professioneller Spirale – damit Fett und Ablagerungen wieder freigespült werden und das Wasser ruhig abläuft.',
+        objectPosition: '52% 42%',
+      },
       {
         src: '/photos/abwassertechnik/andy-pipe-equipment-walk.jpeg',
         alt: 'Schachtortung und Kanalreinigung mit professionellem Ortungsgerät',

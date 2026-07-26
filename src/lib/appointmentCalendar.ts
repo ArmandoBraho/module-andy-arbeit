@@ -1,4 +1,5 @@
 import { serviceThemes } from '../data/serviceIcons'
+import { site } from '../data/content'
 
 const DEFAULT_DURATION_MS = 60 * 60 * 1000
 
@@ -16,6 +17,17 @@ export type AppointmentCalendarInput = {
   durationMs?: number
 }
 
+export type CalendarLinkPayload = {
+  /** Google-style UTC UTC start: YYYYMMDDTHHMMSSZ */
+  start: string
+  /** Google-style UTC end */
+  end: string
+  /** Event title */
+  title: string
+  /** Location */
+  location: string
+}
+
 function escapeIcsText(value: string): string {
   return value
     .replace(/\\/g, '\\\\')
@@ -25,16 +37,6 @@ function escapeIcsText(value: string): string {
 }
 
 function toUtcIcsDateTime(date: Date): string {
-  const year = date.getUTCFullYear()
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0')
-  const day = String(date.getUTCDate()).padStart(2, '0')
-  const hours = String(date.getUTCHours()).padStart(2, '0')
-  const minutes = String(date.getUTCMinutes()).padStart(2, '0')
-  const seconds = String(date.getUTCSeconds()).padStart(2, '0')
-  return `${year}${month}${day}T${hours}${minutes}${seconds}Z`
-}
-
-function toGoogleCalendarDateTime(date: Date): string {
   const year = date.getUTCFullYear()
   const month = String(date.getUTCMonth() + 1).padStart(2, '0')
   const day = String(date.getUTCDate()).padStart(2, '0')
@@ -77,6 +79,8 @@ function formatTextTable(rows: Array<[string, string]>): string {
     .join('\n')
 }
 
+const UTC_STAMP = /^\d{8}T\d{6}Z$/
+
 export function buildAppointmentTitle(input: AppointmentCalendarInput): string {
   return `AndyArbeit – ${input.serviceTitle} (${input.firstName} ${input.lastName})`
 }
@@ -101,10 +105,64 @@ export function buildAppointmentDetails(input: AppointmentCalendarInput): string
     .join('\n')
 }
 
-/** German notification body for the Web3Forms email (single calendar link). */
+function buildCalendarPayload(
+  input: AppointmentCalendarInput,
+): CalendarLinkPayload | null {
+  const window = getAppointmentWindow(input)
+  if (!window) return null
+
+  return {
+    start: toUtcIcsDateTime(window.start),
+    end: toUtcIcsDateTime(window.end),
+    title: buildAppointmentTitle(input),
+    location: input.serviceAddress,
+  }
+}
+
+/**
+ * Ultra-short path-only URL so Outlook can auto-link it.
+ * Long Google URLs and ?query / base64 paths often stay as plain text in Outlook.
+ * Example: https://www.andyarbeit.info/k/20260728T172200Z/20260728T182200Z
+ */
+export function buildSiteCalendarRedirectUrl(
+  input: AppointmentCalendarInput,
+): string | null {
+  const payload = buildCalendarPayload(input)
+  if (!payload) return null
+  return `${site.url}/k/${payload.start}/${payload.end}`
+}
+
+export function parseCalendarPathParams(
+  start: string | undefined,
+  end: string | undefined,
+): CalendarLinkPayload | null {
+  if (!start || !end || !UTC_STAMP.test(start) || !UTC_STAMP.test(end)) return null
+  return {
+    start,
+    end,
+    title: 'AndyArbeit Terminanfrage',
+    location: '',
+  }
+}
+
+export function buildGoogleCalendarUrlFromPayload(
+  payload: CalendarLinkPayload,
+): string {
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: payload.title,
+    dates: `${payload.start}/${payload.end}`,
+    details:
+      'Terminanfrage über die Website. Details siehe E-Mail-Benachrichtigung.',
+    location: payload.location,
+  })
+  return `https://calendar.google.com/calendar/render?${params.toString()}`
+}
+
+/** Plain-text body (Web3Forms escapes HTML – anchors would show as tags). */
 export function buildAppointmentEmailBody(
   input: AppointmentCalendarInput,
-  googleCalendarUrl: string | null,
+  calendarLinkUrl: string | null,
 ): string {
   const theme = getServiceTheme(input.serviceType)
 
@@ -130,8 +188,12 @@ export function buildAppointmentEmailBody(
     input.problemDescription,
   ]
 
-  if (googleCalendarUrl) {
-    sections.push('', 'In Google Kalender öffnen:', googleCalendarUrl)
+  if (calendarLinkUrl) {
+    sections.push(
+      '',
+      'Termin in den Kalender (Link antippen oder .ics-Anhang öffnen):',
+      calendarLinkUrl,
+    )
   }
 
   sections.push(
@@ -143,18 +205,25 @@ export function buildAppointmentEmailBody(
 }
 
 export function buildGoogleCalendarUrl(input: AppointmentCalendarInput): string | null {
-  const window = getAppointmentWindow(input)
-  if (!window) return null
+  const payload = buildCalendarPayload(input)
+  if (!payload) return null
+  return buildGoogleCalendarUrlFromPayload(payload)
+}
 
-  const params = new URLSearchParams({
-    action: 'TEMPLATE',
-    text: buildAppointmentTitle(input),
-    dates: `${toGoogleCalendarDateTime(window.start)}/${toGoogleCalendarDateTime(window.end)}`,
-    details: buildAppointmentDetails(input),
-    location: input.serviceAddress,
+/** Legacy query-string short links */
+export function googleCalendarUrlFromRedirectParams(
+  searchParams: URLSearchParams,
+): string | null {
+  const dates = searchParams.get('d')?.trim()
+  if (!dates || !/^\d{8}T\d{6}Z\/\d{8}T\d{6}Z$/.test(dates)) return null
+  const [start, end] = dates.split('/')
+
+  return buildGoogleCalendarUrlFromPayload({
+    start,
+    end,
+    title: searchParams.get('t')?.trim() || 'AndyArbeit Termin',
+    location: searchParams.get('l')?.trim() || '',
   })
-
-  return `https://calendar.google.com/calendar/render?${params.toString()}`
 }
 
 export function buildIcsContent(input: AppointmentCalendarInput): string | null {
@@ -192,6 +261,29 @@ export function buildIcsContent(input: AppointmentCalendarInput): string | null 
   lines.push('END:VEVENT', 'END:VCALENDAR')
 
   return lines.join('\r\n')
+}
+
+export function buildIcsContentFromPayload(payload: CalendarLinkPayload): string {
+  const uid = `${Date.now()}-${Math.random().toString(36).slice(2)}@andyarbeit.info`
+  const now = toUtcIcsDateTime(new Date())
+
+  return [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//AndyArbeit//Terminanfrage//DE',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    `UID:${uid}`,
+    `DTSTAMP:${now}`,
+    `DTSTART:${payload.start}`,
+    `DTEND:${payload.end}`,
+    `SUMMARY:${escapeIcsText(payload.title)}`,
+    `DESCRIPTION:${escapeIcsText('Terminanfrage über die Website. Details siehe E-Mail.')}`,
+    `LOCATION:${escapeIcsText(payload.location)}`,
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n')
 }
 
 export function downloadIcsFile(filename: string, content: string): void {

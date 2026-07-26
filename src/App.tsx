@@ -8,11 +8,17 @@ import { TerminAnfragenPage } from './pages/TerminAnfragenPage'
 import { NotfallPage } from './pages/NotfallPage'
 import { ImpressumPage } from './pages/ImpressumPage'
 import { DatenschutzPage } from './pages/DatenschutzPage'
+import { KalenderRedirectPage } from './pages/KalenderRedirectPage'
 
 export function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Outside Layout: calendar short links from Terminanfrage emails */}
+        <Route path="/k" element={<KalenderRedirectPage />} />
+        <Route path="/k/:start/:end" element={<KalenderRedirectPage />} />
+        {/* Legacy base64 / query links still resolve via /k */}
+        <Route path="/k/:payload" element={<KalenderRedirectPage />} />
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/leistungen" element={<LeistungenPage />} />

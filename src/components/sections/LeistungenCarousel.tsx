@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useRef, useState, type TransitionEvent } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { services } from '../../data/content'
 import { ServiceIcon } from '../ui/ServiceIcon'
 
 const AUTO_PLAY_MS = 7000
 const USER_PAUSE_MS = 10000
-const SLIDE_LOCK_MS = 1500
 
 type ServiceId = (typeof services)[number]['id']
 type GalleryItem = (typeof services)[number]['gallery'][number]
@@ -28,7 +27,6 @@ function getImageStyle(image: GalleryItem, mediaSide: 'left' | 'right') {
 
   if (raw) {
     const [x, y = 'center'] = raw.split(/\s+/)
-    // Explicit horizontal % keeps the subject fixed in the media column
     if (x.includes('%')) {
       return {
         objectFit: 'cover' as const,
@@ -46,17 +44,6 @@ function getImageStyle(image: GalleryItem, mediaSide: 'left' | 'right') {
     objectFit: 'cover' as const,
     objectPosition: `${mediaSide} center`,
   }
-}
-
-function prefersReducedMotion() {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-}
-
-function realIndexFromTrack(trackIndex: number, galleryLength: number) {
-  if (galleryLength <= 1) return 0
-  if (trackIndex === 0) return galleryLength - 1
-  if (trackIndex === galleryLength + 1) return 0
-  return trackIndex - 1
 }
 
 function ChevronIcon({ direction }: { direction: 'left' | 'right' }) {
@@ -83,29 +70,16 @@ export function LeistungenCarousel() {
   const location = useLocation()
   const navigate = useNavigate()
   const resumeTimeoutRef = useRef<number | undefined>(undefined)
-  const slideLockRef = useRef(false)
-  const slideFailsafeRef = useRef<number | undefined>(undefined)
-  const trackIndexRef = useRef(1)
   const [autoPlay, setAutoPlay] = useState(true)
   const [activeIndex, setActiveIndex] = useState(() =>
     getIndexForId(getServiceIdFromHash(location.hash) ?? services[0].id),
   )
-  const [trackIndex, setTrackIndex] = useState(1)
-  const [animateTrack, setAnimateTrack] = useState(true)
-  const [isSliding, setIsSliding] = useState(false)
-
-  trackIndexRef.current = trackIndex
+  const [activeImageIndex, setActiveImageIndex] = useState(0)
 
   const activeService = services[activeIndex]
   const gallery = activeService.gallery
   const galleryLength = gallery.length
   const hasMultipleImages = galleryLength > 1
-  const activeImageIndex = realIndexFromTrack(trackIndex, galleryLength)
-
-  const trackSlides =
-    galleryLength > 1
-      ? [gallery[galleryLength - 1], ...gallery, gallery[0]]
-      : [...gallery]
 
   const pauseThenResume = useCallback(() => {
     setAutoPlay(false)
@@ -127,173 +101,78 @@ export function LeistungenCarousel() {
     [navigate],
   )
 
-  const clearSlideFailsafe = useCallback(() => {
-    if (slideFailsafeRef.current) {
-      window.clearTimeout(slideFailsafeRef.current)
-      slideFailsafeRef.current = undefined
-    }
-  }, [])
-
-  const unlockSlide = useCallback(() => {
-    clearSlideFailsafe()
-    slideLockRef.current = false
-    setIsSliding(false)
-  }, [clearSlideFailsafe])
-
-  const enableTrackAnimationAfterPaint = useCallback((onDone?: () => void) => {
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        setAnimateTrack(true)
-        onDone?.()
-      })
-    })
-  }, [])
-
-  const jumpTrackWithoutAnimation = useCallback(
-    (nextIndex: number, onDone?: () => void) => {
-      setAnimateTrack(false)
-      setTrackIndex(nextIndex)
-      trackIndexRef.current = nextIndex
-      enableTrackAnimationAfterPaint(onDone)
-    },
-    [enableTrackAnimationAfterPaint],
-  )
-
-  const resetTrackForCategory = useCallback(() => {
-    clearSlideFailsafe()
-    slideLockRef.current = false
-    setIsSliding(false)
-    const nextIndex = galleryLength > 1 ? 1 : 0
-    jumpTrackWithoutAnimation(nextIndex)
-  }, [clearSlideFailsafe, galleryLength, jumpTrackWithoutAnimation])
-
   const goToCategory = useCallback(
     (index: number) => {
-      if (slideLockRef.current || isSliding) return
       pauseThenResume()
       const normalized = (index + services.length) % services.length
       setActiveIndex(normalized)
+      setActiveImageIndex(0)
       syncHash(normalized)
     },
-    [isSliding, pauseThenResume, syncHash],
+    [pauseThenResume, syncHash],
   )
-
-  const goToTrackIndex = useCallback(
-    (nextTrackIndex: number) => {
-      if (!hasMultipleImages || slideLockRef.current) return
-
-      if (prefersReducedMotion()) {
-        let normalized = nextTrackIndex
-        if (normalized > galleryLength) normalized = 1
-        if (normalized < 1) normalized = galleryLength
-        jumpTrackWithoutAnimation(normalized)
-        return
-      }
-
-      slideLockRef.current = true
-      setIsSliding(true)
-      setAnimateTrack(true)
-      setTrackIndex(nextTrackIndex)
-      trackIndexRef.current = nextTrackIndex
-      clearSlideFailsafe()
-      slideFailsafeRef.current = window.setTimeout(() => {
-        const idx = trackIndexRef.current
-        if (idx === galleryLength + 1) {
-          jumpTrackWithoutAnimation(1, unlockSlide)
-        } else if (idx === 0) {
-          jumpTrackWithoutAnimation(galleryLength, unlockSlide)
-        } else {
-          unlockSlide()
-        }
-      }, SLIDE_LOCK_MS)
-    },
-    [
-      clearSlideFailsafe,
-      galleryLength,
-      hasMultipleImages,
-      jumpTrackWithoutAnimation,
-      unlockSlide,
-    ],
-  )
-
-  const goToPreviousImage = useCallback(() => {
-    if (slideLockRef.current || isSliding) return
-    pauseThenResume()
-    goToTrackIndex(trackIndex - 1)
-  }, [goToTrackIndex, isSliding, pauseThenResume, trackIndex])
-
-  const goToNextImage = useCallback(() => {
-    if (slideLockRef.current || isSliding) return
-    pauseThenResume()
-    goToTrackIndex(trackIndex + 1)
-  }, [goToTrackIndex, isSliding, pauseThenResume, trackIndex])
 
   const goToImage = useCallback(
     (imageIndex: number) => {
-      if (slideLockRef.current || isSliding) return
-      pauseThenResume()
-      const normalized = (imageIndex + galleryLength) % galleryLength
-      if (normalized === activeImageIndex) return
-      goToTrackIndex(normalized + 1)
-    },
-    [activeImageIndex, galleryLength, goToTrackIndex, isSliding, pauseThenResume],
-  )
-
-  const handleTrackTransitionEnd = useCallback(
-    (event: TransitionEvent<HTMLDivElement>) => {
-      if (event.target !== event.currentTarget) return
-      if (event.propertyName !== 'transform') return
       if (!hasMultipleImages) return
-
-      const idx = trackIndexRef.current
-
-      if (idx === galleryLength + 1) {
-        jumpTrackWithoutAnimation(1, unlockSlide)
-        return
-      }
-
-      if (idx === 0) {
-        jumpTrackWithoutAnimation(galleryLength, unlockSlide)
-        return
-      }
-
-      unlockSlide()
+      pauseThenResume()
+      setActiveImageIndex((imageIndex + galleryLength) % galleryLength)
     },
-    [galleryLength, hasMultipleImages, jumpTrackWithoutAnimation, unlockSlide],
+    [galleryLength, hasMultipleImages, pauseThenResume],
   )
+
+  const goToPreviousImage = useCallback(() => {
+    goToImage(activeImageIndex - 1)
+  }, [activeImageIndex, goToImage])
+
+  const goToNextImage = useCallback(() => {
+    goToImage(activeImageIndex + 1)
+  }, [activeImageIndex, goToImage])
 
   useEffect(() => {
     setActiveIndex(getIndexForId(getServiceIdFromHash(location.hash) ?? services[0].id))
+    setActiveImageIndex(0)
   }, [location.hash])
 
   useEffect(() => {
-    resetTrackForCategory()
-  }, [activeService.id, resetTrackForCategory])
+    setActiveImageIndex(0)
+  }, [activeService.id])
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || window.matchMedia('(min-width: 768px)').matches) {
+      return
+    }
+
+    const activeTab = document.querySelector<HTMLElement>(
+      '.leistungen-carousel__indicator--active',
+    )
+    activeTab?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+  }, [activeIndex])
 
   useEffect(() => {
     return () => {
       if (resumeTimeoutRef.current) {
         window.clearTimeout(resumeTimeoutRef.current)
       }
-      if (slideFailsafeRef.current) {
-        window.clearTimeout(slideFailsafeRef.current)
-      }
     }
   }, [])
 
   useEffect(() => {
-    if (!autoPlay || !hasMultipleImages || isSliding) return
+    if (!autoPlay || !hasMultipleImages) return
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) return
 
     const timer = window.setInterval(() => {
-      goToTrackIndex(trackIndex + 1)
+      setActiveImageIndex((current) => (current + 1) % galleryLength)
     }, AUTO_PLAY_MS)
 
     return () => window.clearInterval(timer)
-  }, [autoPlay, goToTrackIndex, hasMultipleImages, isSliding, trackIndex])
+  }, [autoPlay, galleryLength, hasMultipleImages])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (!hasMultipleImages || isSliding) return
+      if (!hasMultipleImages) return
 
       if (event.key === 'ArrowLeft') {
         goToPreviousImage()
@@ -304,14 +183,11 @@ export function LeistungenCarousel() {
 
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [goToNextImage, goToPreviousImage, hasMultipleImages, isSliding])
+  }, [goToNextImage, goToPreviousImage, hasMultipleImages])
 
   return (
     <div
-      className={`leistungen-carousel leistungen-carousel--viewport${
-        isSliding ? ' leistungen-carousel--sliding' : ''
-      }`}
-      aria-busy={isSliding}
+      className="leistungen-carousel leistungen-carousel--viewport"
       aria-label="Leistungsübersicht"
       aria-roledescription="Karussell"
     >
@@ -334,7 +210,6 @@ export function LeistungenCarousel() {
               aria-label={`${service.title}${isActive ? ' (aktiv)' : ''}`}
               aria-selected={isActive}
               title={service.title}
-              disabled={isSliding}
               onClick={() => goToCategory(index)}
             >
               <span className="leistungen-carousel__indicator-icon" aria-hidden="true">
@@ -347,20 +222,10 @@ export function LeistungenCarousel() {
       </div>
 
       <div className="leistungen-carousel__stage">
-        <div
-          key={activeService.id}
-          className={`leistungen-carousel__track${
-            animateTrack ? '' : ' leistungen-carousel__track--no-anim'
-          }`}
-          style={{
-            width: `${trackSlides.length * 100}%`,
-            transform: `translate3d(-${(trackIndex * 100) / trackSlides.length}%, 0, 0)`,
-          }}
-          onTransitionEnd={handleTrackTransitionEnd}
-        >
-          {trackSlides.map((image, index) => {
-            const photoIndex = realIndexFromTrack(index, galleryLength)
-            const mediaSide = photoIndex % 2 === 0 ? 'right' : 'left'
+        <div className="leistungen-carousel__slides" key={activeService.id}>
+          {gallery.map((image, index) => {
+            const isActive = index === activeImageIndex
+            const mediaSide = index % 2 === 0 ? 'right' : 'left'
             const layoutClass =
               mediaSide === 'left'
                 ? 'leistungen-carousel__slide--media-left'
@@ -372,55 +237,59 @@ export function LeistungenCarousel() {
             )
 
             return (
-            <article
-              key={`${activeService.id}-${image.src}-${index}`}
-              className={[
-                'leistungen-carousel__slide',
-                'service-card',
-                'service-card--expanded',
-                layoutClass,
-              ].join(' ')}
-              style={{ width: `${100 / trackSlides.length}%` }}
-              aria-hidden={photoIndex !== activeImageIndex}
-            >
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="leistungen-carousel__slide-image leistungen-carousel__slide-image--media"
-                style={imageStyle}
-                draggable={false}
-              />
-              <div className="leistungen-carousel__slide-text-bg" aria-hidden="true">
-                <img
-                  src={image.src}
-                  alt=""
-                  className="leistungen-carousel__slide-image leistungen-carousel__slide-image--text"
-                  style={textBgStyle}
-                  draggable={false}
-                />
-              </div>
-
-              <div className="leistungen-carousel__media" aria-hidden="true" />
-
-              <div className="leistungen-carousel__text">
-                <div className="leistungen-carousel__copy">
-                  <div className="service-card__heading">
-                  <div className="service-card__icon" aria-hidden="true">
-                    <ServiceIcon serviceId={activeService.id} size={24} />
-                  </div>
-                    <h2 className="service-card__title">{activeService.title}</h2>
-                  </div>
-                  <p className="leistungen-carousel__lead">{image.caption}</p>
-                  <p className="leistungen-carousel__body">{image.body}</p>
-                  <Link
-                    to={`/termin-anfragen?service=${activeService.id}`}
-                    className="btn btn--primary leistungen-carousel__cta"
-                  >
-                    Jetzt anfragen
-                  </Link>
+              <article
+                key={`${activeService.id}-${image.src}`}
+                className={[
+                  'leistungen-carousel__slide',
+                  'service-card',
+                  'service-card--expanded',
+                  layoutClass,
+                  isActive ? 'leistungen-carousel__slide--active' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+                aria-hidden={!isActive}
+              >
+                <div className="leistungen-carousel__media">
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="leistungen-carousel__slide-image leistungen-carousel__slide-image--media"
+                    style={imageStyle}
+                    draggable={false}
+                  />
                 </div>
-              </div>
-            </article>
+
+                <div className="leistungen-carousel__slide-text-bg" aria-hidden="true">
+                  <img
+                    src={image.src}
+                    alt=""
+                    className="leistungen-carousel__slide-image leistungen-carousel__slide-image--text"
+                    style={textBgStyle}
+                    draggable={false}
+                  />
+                </div>
+
+                <div className="leistungen-carousel__text">
+                  <div className="leistungen-carousel__copy">
+                    <div className="service-card__heading">
+                      <div className="service-card__icon" aria-hidden="true">
+                        <ServiceIcon serviceId={activeService.id} size={24} />
+                      </div>
+                      <h2 className="service-card__title">{activeService.title}</h2>
+                    </div>
+                    <p className="leistungen-carousel__lead">{image.caption}</p>
+                    <p className="leistungen-carousel__body">{image.body}</p>
+                    <Link
+                      to={`/termin-anfragen?service=${activeService.id}`}
+                      className="btn btn--primary leistungen-carousel__cta"
+                      tabIndex={isActive ? 0 : -1}
+                    >
+                      Jetzt anfragen
+                    </Link>
+                  </div>
+                </div>
+              </article>
             )
           })}
         </div>
@@ -445,7 +314,6 @@ export function LeistungenCarousel() {
                     }`}
                     aria-label={`Bild ${index + 1}: ${item.alt}`}
                     aria-selected={isActive}
-                    disabled={isSliding}
                     onClick={() => goToImage(index)}
                   />
                 )
@@ -457,7 +325,6 @@ export function LeistungenCarousel() {
               className="leistungen-carousel__arrow leistungen-carousel__arrow--prev"
               onClick={goToPreviousImage}
               aria-label="Vorheriges Bild"
-              disabled={isSliding}
             >
               <ChevronIcon direction="left" />
             </button>
@@ -467,7 +334,6 @@ export function LeistungenCarousel() {
               className="leistungen-carousel__arrow leistungen-carousel__arrow--next"
               onClick={goToNextImage}
               aria-label="Nächstes Bild"
-              disabled={isSliding}
             >
               <ChevronIcon direction="right" />
             </button>

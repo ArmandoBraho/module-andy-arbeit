@@ -70,13 +70,16 @@
   flex-shrink: 0;
   line-height: 0;
   height: 100%;
+  padding-block: 0.45rem;
   padding-inline: 0.15rem;
+  box-sizing: border-box;
 }
 
 .header__logo-img {
   display: block;
-  height: calc(#{$header-height} - 6px);
+  height: 100%;
   width: auto;
+  max-height: calc(#{$header-height} - 1rem);
   max-width: min(12rem, 48vw);
   object-fit: contain;
   object-position: left center;
@@ -99,8 +102,12 @@
 }
 
 @media (max-width: #{$bp-md - 1px}) {
+  .header__logo {
+    padding-block: 0.5rem;
+  }
+
   .header__logo-img {
-    height: calc(#{$header-height} - 8px);
+    max-height: calc(#{$header-height} - 1.1rem);
     max-width: min(10.5rem, 52vw);
   }
 }

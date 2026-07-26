@@ -139,15 +139,28 @@
 
 .footer__legal {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
+  justify-content: flex-end;
 }
 
-.footer__legal a {
+.footer__legal a,
+.footer__link--button {
   transition: color $transition-fast;
 }
 
-.footer__legal a:hover {
+.footer__legal a:hover,
+.footer__link--button:hover {
   color: $color-primary;
+}
+
+.footer__link--button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
 }
 
 @media (min-width: $bp-md) {

@@ -4,7 +4,8 @@ import { services } from '../../data/content'
 import { serviceThemes } from '../../data/serviceIcons'
 import {
   buildAppointmentEmailBody,
-  buildGoogleCalendarUrl,
+  buildIcsContent,
+  buildSiteCalendarRedirectUrl,
 } from '../../lib/appointmentCalendar'
 import { Button } from './Button'
 import { ServiceIcon, hasServiceIcon } from './ServiceIcon'
@@ -253,31 +254,55 @@ export function AppointmentForm({
       preferredTime: formData.preferredTime,
       problemDescription: formData.problemDescription,
     }
-    const googleUrl = buildGoogleCalendarUrl(calendarInput)
+    // Path-only short URL (Outlook often ignores URLs with ?query)
+    const calendarLinkUrl = buildSiteCalendarRedirectUrl(calendarInput)
+    const icsContent = buildIcsContent(calendarInput)
 
     setIsSubmitting(true)
 
-    try {
-      const response = await fetch(WEB3FORMS_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          access_key: accessKey,
-          subject: `Terminanfrage: ${serviceTitle} – ${formData.firstName} ${formData.lastName}`,
-          from_name: 'AndyArbeit Website',
-          name: `${formData.firstName} ${formData.lastName}`,
-          email: formData.email,
-          replyto: formData.email,
-          botcheck: false,
-          // One German body only – avoids duplicate fields/links in the Web3Forms email
-          message: buildAppointmentEmailBody(calendarInput, googleUrl),
-        }),
-      })
+    const buildPayload = (includeIcs: boolean) => {
+      const body = new globalThis.FormData()
+      body.append('access_key', accessKey)
+      body.append(
+        'subject',
+        `Terminanfrage: ${serviceTitle} – ${formData.firstName} ${formData.lastName}`,
+      )
+      body.append('from_name', 'AndyArbeit Website')
+      body.append('name', `${formData.firstName} ${formData.lastName}`)
+      body.append('email', formData.email)
+      body.append('replyto', formData.email)
+      // Honeypot must stay empty – sending "false" is treated as filled/bot
+      body.append('botcheck', '')
+      body.append('message', buildAppointmentEmailBody(calendarInput, calendarLinkUrl))
+      if (calendarLinkUrl) {
+        body.append('Kalender-Link', calendarLinkUrl)
+      }
+      // .ics opens natively in Outlook (real attachment, not plain-text URL)
+      if (includeIcs && icsContent) {
+        body.append(
+          'attachment',
+          new Blob([icsContent], { type: 'text/calendar;charset=utf-8' }),
+          'andyarbeit-terminanfrage.ics',
+        )
+      }
+      return body
+    }
 
-      const result = (await response.json()) as { success?: boolean; message?: string }
+    try {
+      let response = await fetch(WEB3FORMS_ENDPOINT, {
+        method: 'POST',
+        body: buildPayload(true),
+      })
+      let result = (await response.json()) as { success?: boolean; message?: string }
+
+      // Free Web3Forms plans may reject attachments – retry without .ics
+      if ((!response.ok || !result.success) && icsContent) {
+        response = await fetch(WEB3FORMS_ENDPOINT, {
+          method: 'POST',
+          body: buildPayload(false),
+        })
+        result = (await response.json()) as { success?: boolean; message?: string }
+      }
 
       if (!response.ok || !result.success) {
         throw new Error(result.message || 'Senden fehlgeschlagen')

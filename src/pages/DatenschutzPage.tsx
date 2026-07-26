@@ -298,13 +298,23 @@ export function DatenschutzPage() {
 
         <h2>12. Cookies und Tracking</h2>
         <p>
-          Diese Website setzt nach unserem Kenntnisstand derzeit keine eigenen
-          Tracking-, Analyse- oder Marketing-Cookies ein. Technisch notwendige
-          Speichervorgänge im Browser können im Rahmen der normalen
-          Website-Funktion entstehen. Sollten künftig Analyse- oder
-          Marketing-Tools eingesetzt werden, werden wir diese Erklärung
-          entsprechend aktualisieren und – soweit nötig – eine Einwilligung
-          einholen.
+          Beim ersten Besuch zeigen wir einen Hinweis zu Cookies. Technisch
+          notwendige Speichervorgänge (z.&nbsp;B. Speicherung Ihrer
+          Cookie-Auswahl im lokalen Speicher des Browsers) sind für den Betrieb
+          der Website erforderlich.
+        </p>
+        <p>
+          Optionale Statistik-Funktionen werden nur ausgeführt, wenn Sie dem
+          ausdrücklich zustimmen. Mit Einwilligung in „Statistik“ speichern wir
+          lokal im Browser Informationen zu Sitzungen (Anzahl) und
+          Sitzungsdauer. Ein neuer Besuch nach längerer Pause (ca. 30 Minuten)
+          gilt als neue Sitzung. Die Auswertung bleibt auf Ihrem Gerät, sofern
+          kein gesonderter Analyse-Endpunkt konfiguriert ist. Sie können Ihre
+          Auswahl jederzeit über „Cookie-Einstellungen“ im Fußbereich ändern
+          oder widerrufen; danach wird keine neue Statistik mehr erfasst.
+        </p>
+        <p>
+          Marketing-Cookies setzen wir derzeit nicht ein.
         </p>
 
         <h2>13. Keine automatisierte Entscheidungsfindung</h2>

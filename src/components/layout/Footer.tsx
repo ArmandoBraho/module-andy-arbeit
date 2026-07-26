@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { footerNavLinks, site, socialLinks } from '../../data/content'
+import { COOKIE_CONSENT_OPEN_EVENT } from '../../lib/cookieConsent'
 
 function InstagramIcon() {
   return (
@@ -97,6 +98,15 @@ export function Footer() {
           <Link to="/datenschutz" className="footer__link">
             Datenschutz
           </Link>
+          <button
+            type="button"
+            className="footer__link footer__link--button"
+            onClick={() => {
+              window.dispatchEvent(new Event(COOKIE_CONSENT_OPEN_EVENT))
+            }}
+          >
+            Cookie-Einstellungen
+          </button>
         </div>
       </div>
     </footer>
