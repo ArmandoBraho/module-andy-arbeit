@@ -384,19 +384,19 @@ export const services = [
     body: 'Ein gepflegtes Gebäude hinterlässt Eindruck – bei Mitarbeitenden, Kunden und Bewohnern. Wir übernehmen die regelmäßige und gründliche Reinigung von Büros, Gewerberäumen und Treppenhäusern und passen den Einsatzplan flexibel an Ihren Bedarf an.',
     gallery: [
       {
+        src: '/photos/gebaeudereinigung/andy-lobby-mopping.jpeg',
+        alt: 'Gebäudereinigung im Eingangsbereich mit Flachmopp',
+        caption: 'Saubere Eingänge und Gemeinschaftsflächen – freundlich und professionell.',
+        body: 'Ob Eingangsbereich, Flur oder Aufzugsvorplatz: wir sorgen für einen gepflegten ersten Eindruck im Gebäude.',
+        objectPosition: { mobile: '50% 30%', desktop: '50% 28%' },
+      },
+      {
         src: '/photos/gebaeudereinigung/andy-roof-cleaning.jpeg',
         alt: 'Professionelle Dach- und Gebäudeaußenreinigung',
         caption: 'Außenreinigung mit Schutzausrüstung – gründlich und sicher.',
         body: 'Von Dach bis Fassade: wir reinigen Außenflächen gründlich und mit dem passenden Equipment.',
         objectFit: 'contain' as const,
         objectPosition: { mobile: '50% 50%', desktop: '50% 50%' },
-      },
-      {
-        src: '/photos/gebaeudereinigung/andy-cleaning-equipment.jpeg',
-        alt: 'Professionelles Reinigungszubehör für die Gebäudereinigung',
-        caption: 'Saubere Innenräume – mit dem richtigen Equipment.',
-        body: 'Ob Büro, Gewerbe oder Treppenhaus: wir bringen Profi-Gerät mit und sorgen für gründliche, zuverlässige Reinigung.',
-        objectPosition: { mobile: '50% 45%', desktop: '50% 42%' },
       },
       {
         src: '/photos/gebaeudereinigung/andy-trimmer-blower.jpeg',
