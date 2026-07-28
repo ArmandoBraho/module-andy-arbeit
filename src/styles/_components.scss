@@ -2134,6 +2134,81 @@
   line-height: 1.7;
 }
 
+.leistungen-carousel__body-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.leistungen-carousel__body-long {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.leistungen-carousel__body-long .leistungen-carousel__body {
+  margin: 0;
+}
+
+.leistungen-carousel__benefits-title {
+  margin: 0.15rem 0 0;
+  color: $color-text;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.leistungen-carousel__benefits-list {
+  margin: 0.35rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.leistungen-carousel__benefits-list li {
+  position: relative;
+  padding-left: 1.25rem;
+  color: $color-text-muted;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.leistungen-carousel__benefits-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: $color-primary;
+}
+
+.leistungen-carousel__more {
+  align-self: flex-start;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: $color-primary;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.leistungen-carousel__more:hover {
+  color: $color-primary-dark;
+}
+
+.leistungen-carousel__more:focus-visible {
+  outline: 3px solid rgba($color-primary, 0.35);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 @media (min-width: $bp-md) {
   .leistungen-carousel__body {
     font-size: 0.94rem;
@@ -2442,7 +2517,7 @@
 }
 
 .layout--overlay-hero .leistungen-carousel--viewport .leistungen-carousel__indicators {
-  top: $header-height;
+  top: calc(#{$header-height} + 0.4rem);
 }
 
 @media (min-width: $bp-md) {
@@ -2699,6 +2774,11 @@
 
   .leistungen-carousel--viewport .leistungen-carousel__text {
     justify-content: center;
+    justify-content: safe center;
+  }
+
+  .leistungen-carousel--viewport .leistungen-carousel__text--expanded {
+    justify-content: flex-start;
   }
 }
 
@@ -2710,7 +2790,7 @@
 @media (min-width: $bp-md) {
   // Text on the right (media left) → clear the right arrow
   .leistungen-carousel--viewport .leistungen-carousel__text {
-    padding: 7.5rem 4.5rem 2rem 1.5rem;
+    padding: 8.75rem 4.5rem 2rem 1.5rem;
     background: linear-gradient(
       to right,
       rgba(255, 255, 255, 0.15) 0%,
@@ -2721,7 +2801,7 @@
 
   // Text on the left (media right) → clear the left arrow
   .leistungen-carousel--viewport .leistungen-carousel__slide--media-right .leistungen-carousel__text {
-    padding: 7.5rem 1.5rem 2rem 4.5rem;
+    padding: 8.75rem 1.5rem 2rem 4.5rem;
     background: linear-gradient(
       to left,
       rgba(255, 255, 255, 0.15) 0%,
@@ -2735,7 +2815,7 @@
     .leistungen-carousel--viewport
     .leistungen-carousel__slide--media-right
     .leistungen-carousel__text {
-    padding-top: calc(#{$header-height} + 7.5rem);
+    padding-top: calc(#{$header-height} + 8.75rem);
   }
 
   // Desktop only: readable panel around the texts, surroundings unchanged.
@@ -2777,11 +2857,11 @@
 
 @media (min-width: $bp-lg) {
   .leistungen-carousel--viewport .leistungen-carousel__text {
-    padding: 7.75rem 5rem 2.5rem 1.75rem;
+    padding: 9rem 5rem 2.5rem 1.75rem;
   }
 
   .leistungen-carousel--viewport .leistungen-carousel__slide--media-right .leistungen-carousel__text {
-    padding: 7.75rem 1.75rem 2.5rem 5rem;
+    padding: 9rem 1.75rem 2.5rem 5rem;
   }
 
   .layout--overlay-hero .leistungen-carousel--viewport .leistungen-carousel__text,
@@ -2789,7 +2869,7 @@
     .leistungen-carousel--viewport
     .leistungen-carousel__slide--media-right
     .leistungen-carousel__text {
-    padding-top: calc(#{$header-height} + 7.75rem);
+    padding-top: calc(#{$header-height} + 9rem);
   }
 
   .leistungen-carousel--viewport .leistungen-carousel__copy {

@@ -304,8 +304,21 @@ export const services = [
       {
         src: '/photos/komplettsanierung/andy-renovation-infrastructure.jpeg',
         alt: 'Rohbau und Leitungsvorbereitung bei der Komplettsanierung',
-        caption: 'Rohbau und Leitungen – die Basis für eine moderne Sanierung.',
+        caption: 'Rohbauvorbereitung für Ihre Sanierung',
         body: 'Wir bereiten Wände und Leitungswege für Elektrik, Gas und Wasser vor – abgestimmt mit dem Meisterbetrieb, damit die Sanierung auf einem soliden Fundament steht.',
+        bodyLong: [
+          'Eine erfolgreiche Sanierung beginnt mit einer soliden Vorbereitung. Ob Bad, Küche, Wohnung oder komplettes Haus: Wir schaffen die fachgerechte Grundlage für alle nachfolgenden Arbeiten.',
+          'Wir erstellen Wanddurchbrüche, Schlitze und Leitungswege für Elektrik, Wasser und Gas präzise und sauber. Durch die enge Abstimmung mit den beteiligten Fachbetrieben sorgen wir dafür, dass alle Arbeiten reibungslos ineinandergreifen und Ihr Sanierungsprojekt planmäßig umgesetzt werden kann.',
+          'So sparen Sie Zeit, vermeiden unnötige Verzögerungen und profitieren von einer professionellen Ausführung von Anfang an.',
+        ],
+        benefits: [
+          'Fachgerechte Rohbauvorbereitung',
+          'Saubere und zuverlässige Arbeitsweise',
+          'Enge Abstimmung mit allen Gewerken',
+          'Termingerechte Umsetzung',
+          'Weniger Koordinationsaufwand für Sie',
+          'Optimale Grundlage für eine erfolgreiche Sanierung',
+        ],
         objectPosition: { mobile: '50% 40%', desktop: '48% 42%' },
       },
     ],

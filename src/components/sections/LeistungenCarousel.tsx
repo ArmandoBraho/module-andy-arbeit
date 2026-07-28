@@ -95,11 +95,13 @@ export function LeistungenCarousel() {
   const location = useLocation()
   const navigate = useNavigate()
   const resumeTimeoutRef = useRef<number | undefined>(undefined)
+  const textPanelRef = useRef<HTMLDivElement | null>(null)
   const [autoPlay, setAutoPlay] = useState(AUTO_PLAY_ENABLED)
   const [activeIndex, setActiveIndex] = useState(() =>
     getIndexForId(getServiceIdFromHash(location.hash) ?? services[0].id),
   )
   const [activeImageIndex, setActiveImageIndex] = useState(0)
+  const [bodyExpanded, setBodyExpanded] = useState(false)
 
   const activeService = services[activeIndex]
   const gallery = activeService.gallery
@@ -159,11 +161,24 @@ export function LeistungenCarousel() {
   useEffect(() => {
     setActiveIndex(getIndexForId(getServiceIdFromHash(location.hash) ?? services[0].id))
     setActiveImageIndex(0)
+    setBodyExpanded(false)
   }, [location.hash])
 
   useEffect(() => {
     setActiveImageIndex(0)
+    setBodyExpanded(false)
   }, [activeService.id])
+
+  useEffect(() => {
+    setBodyExpanded(false)
+  }, [activeImageIndex])
+
+  useEffect(() => {
+    if (!bodyExpanded) return
+    const panel = textPanelRef.current
+    if (!panel) return
+    panel.scrollTop = 0
+  }, [bodyExpanded])
 
   useEffect(() => {
     if (typeof window === 'undefined' || window.matchMedia('(min-width: 768px)').matches) {
@@ -265,6 +280,14 @@ export function LeistungenCarousel() {
             }
             const useContain =
               'objectFit' in image && image.objectFit === 'contain'
+            const imageBodyLong =
+              'bodyLong' in image && Array.isArray(image.bodyLong) ? image.bodyLong : undefined
+            const imageBenefits =
+              'benefits' in image && Array.isArray(image.benefits) ? image.benefits : undefined
+            const hasExpandedBody =
+              (imageBodyLong !== undefined && imageBodyLong.length > 0) ||
+              (imageBenefits !== undefined && imageBenefits.length > 0)
+            const showExpanded = bodyExpanded && isActive && hasExpandedBody
 
             return (
               <article
@@ -306,7 +329,12 @@ export function LeistungenCarousel() {
                   />
                 </div>
 
-                <div className="leistungen-carousel__text">
+                <div
+                  className={`leistungen-carousel__text${
+                    showExpanded ? ' leistungen-carousel__text--expanded' : ''
+                  }`}
+                  ref={isActive ? textPanelRef : undefined}
+                >
                   <div className="leistungen-carousel__copy">
                     <div className="service-card__heading">
                       <div className="service-card__icon" aria-hidden="true">
@@ -315,7 +343,46 @@ export function LeistungenCarousel() {
                       <h2 className="service-card__title">{activeService.title}</h2>
                     </div>
                     <p className="leistungen-carousel__lead">{image.caption}</p>
-                    <p className="leistungen-carousel__body">{image.body}</p>
+                    <div className="leistungen-carousel__body-block">
+                      {showExpanded && imageBodyLong && imageBodyLong.length > 0 ? (
+                        <div className="leistungen-carousel__body-long">
+                          {imageBodyLong.map((paragraph) => (
+                            <p key={paragraph} className="leistungen-carousel__body">
+                              {paragraph}
+                            </p>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="leistungen-carousel__body">{image.body}</p>
+                      )}
+
+                      {showExpanded && imageBenefits && imageBenefits.length > 0 && (
+                        <div className="leistungen-carousel__benefits">
+                          <p className="leistungen-carousel__benefits-title">
+                            Ihre Vorteile auf einen Blick
+                          </p>
+                          <ul className="leistungen-carousel__benefits-list">
+                            {imageBenefits.map((benefit) => (
+                              <li key={benefit}>{benefit}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {hasExpandedBody && isActive && (
+                        <button
+                          type="button"
+                          className="leistungen-carousel__more"
+                          aria-expanded={bodyExpanded}
+                          onClick={() => {
+                            pauseThenResume()
+                            setBodyExpanded((open) => !open)
+                          }}
+                        >
+                          {bodyExpanded ? 'weniger anzeigen' : 'mehr lesen…'}
+                        </button>
+                      )}
+                    </div>
                     <Link
                       to={`/termin-anfragen?service=${activeService.id}`}
                       className="btn btn--primary leistungen-carousel__cta"
