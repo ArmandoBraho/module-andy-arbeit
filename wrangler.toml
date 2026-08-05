@@ -1,0 +1,7 @@
+name = "module-andy-arbeit"
+compatibility_date = "2026-07-28"
+
+# Serve index.html for unknown paths (React Router deep links / refresh)
+[assets]
+directory = "./dist"
+not_found_handling = "single-page-application"
