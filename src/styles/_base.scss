@@ -9,6 +9,7 @@
 html {
   scroll-behavior: smooth;
   height: 100%;
+  overflow-x: clip;
 }
 
 body {
@@ -20,6 +21,7 @@ body {
   color: $color-text;
   background: $color-bg;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 
 #root {

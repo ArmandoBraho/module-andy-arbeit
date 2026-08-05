@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { appointmentRequest, services } from '../data/content'
 import { AppointmentForm } from '../components/ui/AppointmentForm'
@@ -7,10 +7,114 @@ import { NotfallIcon } from '../components/ui/NotfallIcon'
 
 type Choice = 'appointment' | null
 
+const TOOLTIP_VIEWPORT_MARGIN = 12
+const TOOLTIP_MAX_WIDTH_PX = 18 * 16
+
 function getServiceIdFromParams(params: URLSearchParams): string | null {
   const raw = params.get('service') ?? params.get('leistung')
   if (!raw) return null
   return services.some((service) => service.id === raw) ? raw : null
+}
+
+function AppointmentStepTip({
+  tipId,
+  label,
+  description,
+  isOpen,
+  onToggle,
+}: {
+  tipId: string
+  label: string
+  description: string
+  isOpen: boolean
+  onToggle: () => void
+}) {
+  const tipRef = useRef<HTMLDivElement>(null)
+  const tooltipRef = useRef<HTMLDivElement>(null)
+  const [position, setPosition] = useState<{ left: number; arrowLeft: number; width: number } | null>(
+    null,
+  )
+
+  useLayoutEffect(() => {
+    if (!isOpen) {
+      setPosition(null)
+      return
+    }
+
+    const updatePosition = () => {
+      const tip = tipRef.current
+      const tooltip = tooltipRef.current
+      if (!tip || !tooltip) return
+
+      const tipRect = tip.getBoundingClientRect()
+      const availableWidth = Math.max(
+        160,
+        window.innerWidth - TOOLTIP_VIEWPORT_MARGIN * 2,
+      )
+      const width = Math.min(TOOLTIP_MAX_WIDTH_PX, availableWidth)
+
+      // Prefer left-aligning with the info button, then clamp into the viewport.
+      let viewportLeft = tipRect.left
+      if (viewportLeft + width > window.innerWidth - TOOLTIP_VIEWPORT_MARGIN) {
+        viewportLeft = window.innerWidth - TOOLTIP_VIEWPORT_MARGIN - width
+      }
+      if (viewportLeft < TOOLTIP_VIEWPORT_MARGIN) {
+        viewportLeft = TOOLTIP_VIEWPORT_MARGIN
+      }
+
+      const left = viewportLeft - tipRect.left
+      const buttonCenter = tipRect.width / 2
+      const arrowLeft = Math.min(
+        Math.max(buttonCenter - left - 4, 10),
+        width - 18,
+      )
+
+      setPosition({ left, arrowLeft, width })
+    }
+
+    updatePosition()
+    window.addEventListener('resize', updatePosition)
+    window.addEventListener('scroll', updatePosition, true)
+
+    return () => {
+      window.removeEventListener('resize', updatePosition)
+      window.removeEventListener('scroll', updatePosition, true)
+    }
+  }, [isOpen, description])
+
+  return (
+    <div className="appointment-step__tip" ref={tipRef}>
+      <button
+        type="button"
+        className={`appointment-step__info${isOpen ? ' appointment-step__info--open' : ''}`}
+        aria-expanded={isOpen}
+        aria-controls={tipId}
+        title={label}
+        onClick={onToggle}
+      >
+        <InfoIcon size={13} />
+      </button>
+      {isOpen && (
+        <div
+          id={tipId}
+          ref={tooltipRef}
+          className="appointment-step__tooltip"
+          role="tooltip"
+          style={
+            position
+              ? {
+                  left: position.left,
+                  width: position.width,
+                  ['--tooltip-arrow-left' as string]: `${position.arrowLeft}px`,
+                }
+              : undefined
+          }
+        >
+          {description}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export function TerminAnfragenPage() {
@@ -139,29 +243,13 @@ export function TerminAnfragenPage() {
                       <div className="appointment-step__body">
                         <div className="appointment-step__row">
                           <h3 className="appointment-step__title">{step.title}</h3>
-                          <div className="appointment-step__tip">
-                            <button
-                              type="button"
-                              className={`appointment-step__info${
-                                isOpen ? ' appointment-step__info--open' : ''
-                              }`}
-                              aria-expanded={isOpen}
-                              aria-controls={`appointment-step-tip-${index}`}
-                              title={appointmentRequest.stepsInfoLabel}
-                              onClick={() => setOpenTip(isOpen ? null : index)}
-                            >
-                              <InfoIcon size={13} />
-                            </button>
-                            {isOpen && (
-                              <div
-                                id={`appointment-step-tip-${index}`}
-                                className="appointment-step__tooltip"
-                                role="tooltip"
-                              >
-                                {step.description}
-                              </div>
-                            )}
-                          </div>
+                          <AppointmentStepTip
+                            tipId={`appointment-step-tip-${index}`}
+                            label={appointmentRequest.stepsInfoLabel}
+                            description={step.description}
+                            isOpen={isOpen}
+                            onToggle={() => setOpenTip(isOpen ? null : index)}
+                          />
                         </div>
                         <p className="appointment-step__short">{step.short}</p>
                       </div>
