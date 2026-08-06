@@ -152,7 +152,7 @@ export const appointmentRequest = {
   notfallExamplesTitle: 'Ein Notfall liegt z. B. vor bei:',
   notfallExamples: [
     'Rohrverstopfung mit Überlauf oder Wasser im Bad / Keller',
-    'Abfluss läuft nicht mehr ab und droht Folgeschäden',
+    'Abfluss läuft nicht mehr ab und Folgeschäden drohen',
     'Rückstau, geruchsintensiver oder dringender Abwasser-Notfall',
     'Probleme, die nicht bis zu einem geplanten Termin warten können',
   ],
