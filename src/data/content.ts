@@ -401,7 +401,7 @@ export const services = [
         alt: 'Gebäudereinigung im Eingangsbereich mit Flachmopp',
         caption: 'Saubere Eingänge und Gemeinschaftsflächen – freundlich und professionell.',
         body: 'Ob Eingangsbereich, Flur oder Aufzugsvorplatz: wir sorgen für einen gepflegten ersten Eindruck im Gebäude.',
-        objectPosition: { mobile: '50% 30%', desktop: '50% 28%' },
+        objectPosition: { mobile: '50% 48%', desktop: '50% 58%' },
       },
       {
         src: '/photos/gebaeudereinigung/andy-outdoor-mop-wringer.jpeg',
@@ -424,7 +424,6 @@ export const services = [
 
 export const serviceAreas = [
   'München Stadt',
-  'Pasing',
   'Germering',
   'Gröbenzell',
   'Fürstenfeldbruck',

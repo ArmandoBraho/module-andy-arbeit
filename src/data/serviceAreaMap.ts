@@ -1,7 +1,6 @@
 /** Approximate centers of listed service areas */
 export const serviceAreaLocations = [
   { name: 'München Stadt', lat: 48.1374, lng: 11.5755 },
-  { name: 'Pasing', lat: 48.1477, lng: 11.4608 },
   { name: 'Germering', lat: 48.1339, lng: 11.3669 },
   { name: 'Gröbenzell', lat: 48.1954, lng: 11.3743 },
   { name: 'Fürstenfeldbruck', lat: 48.178, lng: 11.2548 },
