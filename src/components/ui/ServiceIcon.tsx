@@ -147,6 +147,17 @@ function GardenIcon({ className, size }: IconProps) {
   )
 }
 
+function OverviewIcon({ className, size }: IconProps) {
+  return (
+    <svg className={className} width={size} height={size} {...svgProps}>
+      <rect x="4" y="4.5" width="6.5" height="6.5" rx="1.2" stroke="currentColor" strokeWidth="1.6" />
+      <rect x="13.5" y="4.5" width="6.5" height="6.5" rx="1.2" stroke="currentColor" strokeWidth="1.6" />
+      <rect x="4" y="13" width="6.5" height="6.5" rx="1.2" stroke="currentColor" strokeWidth="1.6" />
+      <rect x="13.5" y="13" width="6.5" height="6.5" rx="1.2" stroke="currentColor" strokeWidth="1.6" />
+    </svg>
+  )
+}
+
 function CleaningIcon({ className, size }: IconProps) {
   return (
     <svg className={className} width={size} height={size} {...svgProps}>
@@ -180,6 +191,7 @@ function CleaningIcon({ className, size }: IconProps) {
 }
 
 const iconsByServiceId: Record<string, (props: IconProps) => ReactNode> = {
+  uebersicht: OverviewIcon,
   abwassertechnik: PipeIcon,
   komplettsanierung: RenovationIcon,
   hausmeisterservice: HouseIcon,

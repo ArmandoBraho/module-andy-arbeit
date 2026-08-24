@@ -12,7 +12,7 @@ export function PartnersSection() {
           </h2>
           <p className="partners-teaser__subtitle">
             Starke Meisterbetriebe an unserer Seite – wenn es um mehr als den
-            Alltag geht.
+            Alltag&nbsp;geht.
           </p>
         </div>
 

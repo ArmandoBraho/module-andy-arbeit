@@ -3,12 +3,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { services } from '../../data/content'
 import { ServiceIcon } from '../ui/ServiceIcon'
 
-const AUTO_PLAY_MS = 8000
+const AUTO_PLAY_MS = 12000
 const USER_PAUSE_MS = 10000
 /** Set false while tuning image crops; re-enable for production. */
 const AUTO_PLAY_ENABLED = true
+const OVERVIEW_ID = 'uebersicht' as const
 
 type ServiceId = (typeof services)[number]['id']
+type CategoryId = ServiceId | typeof OVERVIEW_ID
 type GalleryItem = (typeof services)[number]['gallery'][number]
 type ObjectPositionValue =
   | string
@@ -17,9 +19,10 @@ type ObjectPositionValue =
       desktop: string
     }
 
-function getServiceIdFromHash(hash: string): ServiceId | null {
+function getCategoryFromHash(hash: string): CategoryId {
   const id = hash.replace(/^#/, '')
-  return services.some((service) => service.id === id) ? (id as ServiceId) : null
+  if (!id || id === OVERVIEW_ID) return OVERVIEW_ID
+  return services.some((service) => service.id === id) ? (id as ServiceId) : OVERVIEW_ID
 }
 
 function getIndexForId(id: ServiceId): number {
@@ -97,14 +100,16 @@ export function LeistungenCarousel() {
   const resumeTimeoutRef = useRef<number | undefined>(undefined)
   const textPanelRef = useRef<HTMLDivElement | null>(null)
   const [autoPlay, setAutoPlay] = useState(AUTO_PLAY_ENABLED)
-  const [activeIndex, setActiveIndex] = useState(() =>
-    getIndexForId(getServiceIdFromHash(location.hash) ?? services[0].id),
+  const [activeCategory, setActiveCategory] = useState<CategoryId>(() =>
+    getCategoryFromHash(location.hash),
   )
   const [activeImageIndex, setActiveImageIndex] = useState(0)
   const [bodyExpanded, setBodyExpanded] = useState(false)
 
+  const isOverview = activeCategory === OVERVIEW_ID
+  const activeIndex = isOverview ? 0 : getIndexForId(activeCategory)
   const activeService = services[activeIndex]
-  const gallery = activeService.gallery
+  const gallery = isOverview ? [] : activeService.gallery
   const galleryLength = gallery.length
   const hasMultipleImages = galleryLength > 1
 
@@ -123,20 +128,28 @@ export function LeistungenCarousel() {
   }, [])
 
   const syncHash = useCallback(
-    (index: number) => {
-      const service = services[index]
-      navigate(`/leistungen#${service.id}`, { replace: true })
+    (category: CategoryId) => {
+      navigate(`/leistungen#${category}`, { replace: true })
     },
     [navigate],
   )
+
+  const goToOverview = useCallback(() => {
+    setActiveCategory(OVERVIEW_ID)
+    setActiveImageIndex(0)
+    setBodyExpanded(false)
+    setAutoPlay(false)
+    syncHash(OVERVIEW_ID)
+  }, [syncHash])
 
   const goToCategory = useCallback(
     (index: number) => {
       pauseThenResume()
       const normalized = (index + services.length) % services.length
-      setActiveIndex(normalized)
+      setActiveCategory(services[normalized].id)
       setActiveImageIndex(0)
-      syncHash(normalized)
+      setBodyExpanded(false)
+      syncHash(services[normalized].id)
     },
     [pauseThenResume, syncHash],
   )
@@ -159,7 +172,7 @@ export function LeistungenCarousel() {
   }, [activeImageIndex, goToImage])
 
   useEffect(() => {
-    setActiveIndex(getIndexForId(getServiceIdFromHash(location.hash) ?? services[0].id))
+    setActiveCategory(getCategoryFromHash(location.hash))
     setActiveImageIndex(0)
     setBodyExpanded(false)
   }, [location.hash])
@@ -189,7 +202,7 @@ export function LeistungenCarousel() {
       '.leistungen-carousel__indicator--active',
     )
     activeTab?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
-  }, [activeIndex])
+  }, [activeCategory])
 
   useEffect(() => {
     return () => {
@@ -200,7 +213,7 @@ export function LeistungenCarousel() {
   }, [])
 
   useEffect(() => {
-    if (!autoPlay || !hasMultipleImages) return
+    if (isOverview || !autoPlay || !hasMultipleImages) return
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) return
@@ -210,11 +223,11 @@ export function LeistungenCarousel() {
     }, AUTO_PLAY_MS)
 
     return () => window.clearInterval(timer)
-  }, [autoPlay, galleryLength, hasMultipleImages])
+  }, [autoPlay, galleryLength, hasMultipleImages, isOverview])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (!hasMultipleImages) return
+      if (isOverview || !hasMultipleImages) return
 
       if (event.key === 'ArrowLeft') {
         goToPreviousImage()
@@ -225,21 +238,40 @@ export function LeistungenCarousel() {
 
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [goToNextImage, goToPreviousImage, hasMultipleImages])
+  }, [goToNextImage, goToPreviousImage, hasMultipleImages, isOverview])
 
   return (
     <div
-      className="leistungen-carousel leistungen-carousel--viewport"
+      className={`leistungen-carousel leistungen-carousel--viewport${
+        isOverview ? ' leistungen-carousel--overview' : ''
+      }`}
       aria-label="Leistungsübersicht"
-      aria-roledescription="Karussell"
+      aria-roledescription={isOverview ? undefined : 'Karussell'}
     >
       <div
         className="leistungen-carousel__indicators"
         role="tablist"
         aria-label="Leistungskategorien"
       >
+        <button
+          type="button"
+          role="tab"
+          className={`leistungen-carousel__indicator${
+            isOverview ? ' leistungen-carousel__indicator--active' : ''
+          }`}
+          aria-label={`Übersicht aller Leistungen${isOverview ? ' (aktiv)' : ''}`}
+          aria-selected={isOverview}
+          title="Übersicht aller Leistungen"
+          onClick={goToOverview}
+        >
+          <span className="leistungen-carousel__indicator-icon" aria-hidden="true">
+            <ServiceIcon serviceId={OVERVIEW_ID} size={18} />
+          </span>
+          <span className="leistungen-carousel__indicator-label">Übersicht</span>
+        </button>
+
         {services.map((service, index) => {
-          const isActive = index === activeIndex
+          const isActive = !isOverview && service.id === activeCategory
 
           return (
             <button
@@ -263,6 +295,41 @@ export function LeistungenCarousel() {
         })}
       </div>
 
+      {isOverview ? (
+        <div className="leistungen-overview">
+          <div className="leistungen-overview__intro">
+            <h2 className="leistungen-overview__title">Übersicht aller Leistungen</h2>
+            <p className="leistungen-overview__lead">
+              Alle Kategorien auf einen Blick. Tippen Sie auf eine Leistung, um Details und
+              Fotos zu sehen.
+            </p>
+          </div>
+
+          <div className="leistungen-overview__grid">
+            {services.map((service) => (
+              <Link
+                key={service.id}
+                to={`/leistungen#${service.id}`}
+                className="leistungen-overview__card"
+              >
+                <div className="leistungen-overview__card-heading">
+                  <span className="service-card__icon" aria-hidden="true">
+                    <ServiceIcon serviceId={service.id} size={22} />
+                  </span>
+                  <span className="leistungen-overview__card-title">{service.title}</span>
+                </div>
+                <p className="leistungen-overview__card-text">{service.description}</p>
+                <ul className="leistungen-overview__offers">
+                  {service.gallery.map((item) => (
+                    <li key={item.src}>{item.caption}</li>
+                  ))}
+                </ul>
+                <span className="leistungen-overview__card-link">Zur Kategorie →</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : (
       <div className="leistungen-carousel__stage">
         <div className="leistungen-carousel__slides" key={activeService.id}>
           {gallery.map((image, index) => {
@@ -443,6 +510,7 @@ export function LeistungenCarousel() {
           </div>
         )}
       </div>
+      )}
     </div>
   )
 }
