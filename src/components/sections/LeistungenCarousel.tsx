@@ -198,10 +198,18 @@ export function LeistungenCarousel() {
       return
     }
 
-    const activeTab = document.querySelector<HTMLElement>(
+    const strip = document.querySelector<HTMLElement>('.leistungen-carousel__indicators')
+    const activeTab = strip?.querySelector<HTMLElement>(
       '.leistungen-carousel__indicator--active',
     )
-    activeTab?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+    if (!strip || !activeTab) return
+
+    const stripRect = strip.getBoundingClientRect()
+    const tabRect = activeTab.getBoundingClientRect()
+    const delta =
+      tabRect.left - stripRect.left - (stripRect.width - tabRect.width) / 2
+
+    strip.scrollTo({ left: strip.scrollLeft + delta, behavior: 'smooth' })
   }, [activeCategory])
 
   useEffect(() => {
@@ -320,8 +328,8 @@ export function LeistungenCarousel() {
                 </div>
                 <p className="leistungen-overview__card-text">{service.description}</p>
                 <ul className="leistungen-overview__offers">
-                  {service.gallery.map((item) => (
-                    <li key={item.src}>{item.caption}</li>
+                  {service.overviewOffers.map((offer) => (
+                    <li key={offer}>{offer}</li>
                   ))}
                 </ul>
                 <span className="leistungen-overview__card-link">Zur Kategorie →</span>

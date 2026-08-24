@@ -254,6 +254,11 @@ export const services = [
     title: 'Abwassertechnik',
     description: 'Rohrreinigung, Wartung (inkl. Notdienst)',
     body: 'Verstopfte Abflüsse und Rohrprobleme kommen selten gelegen – wir helfen schnell und zuverlässig. Ob Küchenleitung reinigen, klassische Rohrreinigung, Hochdruckspülung oder TV-Kamerauntersuchung: wir bieten professionelle Abwassertechnik für Haushalte, Gewerbe und Wohnanlagen. Unser Notdienst ist abends 17–22 Uhr sowie an Wochenenden und Feiertagen erreichbar.',
+    overviewOffers: [
+      'Rohr- und Küchenleitungsreinigung',
+      'Schachtortung & TV-Kamera',
+      'Notdienst abends, Wochenende & Feiertage',
+    ],
     gallery: [
       {
         src: '/photos/abwassertechnik/andy-kitchen-pipe-cleaning.jpeg',
@@ -286,6 +291,11 @@ export const services = [
     description:
       'Elektrik, Gas/Wasser, Abriss & mehr in Kooperation mit einem Meisterbetrieb',
     body: 'Bei Sanierungsprojekten koordinieren wir die wichtigsten Gewerke aus einer Hand. In Kooperation mit einem Meisterbetrieb unterstützen wir Sie bei Elektrik, Gas/Wasser, Abrissarbeiten und weiteren Maßnahmen – von der Planung bis zur sauberen Umsetzung.',
+    overviewOffers: [
+      'Elektrik, Gas/Wasser & Abriss',
+      'Innenausbau und Rohbauvorbereitung',
+      'Abstimmung mit Meisterbetrieb',
+    ],
     gallery: [
       {
         src: '/photos/komplettsanierung/andy-garden-work.jpeg',
@@ -328,6 +338,11 @@ export const services = [
     title: 'Hausmeisterservice',
     description: 'Rundum-Betreuung von Wohnanlagen',
     body: 'Als Hausmeisterservice kümmern wir uns um den laufenden Betrieb Ihrer Wohnanlage: kleinere Reparaturen, Kontrollgänge, Winterdienst-Abstimmung und die schnelle Reaktion, wenn etwas nicht stimmt. So bleibt Ihre Immobilie gepflegt und funktionsfähig.',
+    overviewOffers: [
+      'Kleine Reparaturen & Kontrollgänge',
+      'Dach- und Gebäudepflege',
+      'Gemeinschaftsflächen und Treppenhaus',
+    ],
     gallery: [
       {
         src: '/photos/hausmeisterservice/andy-roof-cleaning.jpeg',
@@ -359,6 +374,11 @@ export const services = [
     title: 'Garten- & Landschaftspflege',
     description: 'Pflege von Grünflächen und Außenanlagen',
     body: 'Gepflegte Außenanlagen werten jedes Objekt auf. Wir unterstützen Sie bei der Garten- und Landschaftspflege – von der regelmäßigen Pflege bis zu saisonalen Arbeiten rund um Ihr Grundstück.',
+    overviewOffers: [
+      'Rasenpflege',
+      'Heckenschnitt',
+      'Pflege von Außenanlagen',
+    ],
     gallery: [
       {
         src: '/photos/garten-landschaftspflege/andy-lawn-mower-portrait.jpeg',
@@ -395,6 +415,11 @@ export const services = [
     title: 'Gebäudereinigung',
     description: 'Saubere Büros, Gewerberäume & Treppenhäuser',
     body: 'Ein gepflegtes Gebäude hinterlässt Eindruck – bei Mitarbeitenden, Kunden und Bewohnern. Wir übernehmen die regelmäßige und gründliche Reinigung von Büros, Gewerberäumen und Treppenhäusern und passen den Einsatzplan flexibel an Ihren Bedarf an.',
+    overviewOffers: [
+      'Büros, Gewerbe & Treppenhäuser',
+      'Eingänge und Gemeinschaftsflächen',
+      'Wege und Außenbereiche',
+    ],
     gallery: [
       {
         src: '/photos/gebaeudereinigung/andy-lobby-mopping.jpeg',
