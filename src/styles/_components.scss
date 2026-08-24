@@ -374,7 +374,7 @@
 }
 
 .layout--overlay-hero .hero-carousel {
-  height: 100dvh;
+  height: 100svh;
   min-height: 420px;
 }
 
@@ -405,7 +405,7 @@
 
 .hero-carousel {
   position: relative;
-  height: calc(100dvh - #{$header-height});
+  height: calc(100svh - #{$header-height});
   min-height: 420px;
   overflow: hidden;
   background: $color-text;
@@ -2500,7 +2500,7 @@
   isolation: isolate;
   display: flex;
   flex-direction: column;
-  height: calc(100dvh - #{$header-height});
+  height: calc(100svh - #{$header-height});
   min-height: 520px;
   gap: 0;
   overflow: hidden;
@@ -2508,7 +2508,7 @@
 }
 
 .layout--overlay-hero .leistungen-carousel--viewport {
-  height: 100dvh;
+  height: 100svh;
 }
 
 .leistungen-carousel--overview {
@@ -2866,7 +2866,7 @@
   /* Taller mobile frame – most gallery shots are portrait; 4/3 cropped them harshly */
   aspect-ratio: 3 / 4;
   height: auto;
-  max-height: min(52dvh, 28rem);
+  max-height: min(52svh, 28rem);
   overflow: hidden;
   background: #141414;
 }
@@ -2895,13 +2895,13 @@
 @media (max-width: #{$bp-md - 1px}) {
   .leistungen-carousel--viewport {
     height: auto;
-    min-height: 100dvh;
+    min-height: 100svh;
     overflow: visible;
   }
 
   .layout--overlay-hero .leistungen-carousel--viewport {
     height: auto;
-    min-height: 100dvh;
+    min-height: 100svh;
   }
 
   .leistungen-carousel--viewport .leistungen-carousel__stage {
@@ -2931,7 +2931,7 @@
   }
 
   .leistungen-carousel--viewport .leistungen-carousel__media {
-    max-height: min(40dvh, 22rem);
+    max-height: min(40svh, 22rem);
   }
 
   .leistungen-carousel--viewport .leistungen-carousel__text {
@@ -3102,7 +3102,7 @@
   /* Match .leistungen-carousel__media frame so controls stay on the photo */
   aspect-ratio: 3 / 4;
   height: auto;
-  max-height: min(52dvh, 28rem);
+  max-height: min(52svh, 28rem);
   pointer-events: none;
 }
 
@@ -3180,7 +3180,7 @@
     width: 100%;
     height: auto;
     aspect-ratio: 3 / 4;
-    max-height: min(40dvh, 22rem);
+    max-height: min(40svh, 22rem);
   }
 
   .leistungen-carousel--viewport .leistungen-carousel__image-dots {
@@ -3523,11 +3523,11 @@
   /* Only constrain the photo frame in the stacked (mobile) layout */
   @media (max-width: #{$bp-md - 1px}) {
     .leistungen-carousel--viewport .leistungen-carousel__media {
-      max-height: min(36dvh, 20rem);
+      max-height: min(36svh, 20rem);
     }
 
     .leistungen-carousel--viewport .leistungen-carousel__media-chrome {
-      max-height: min(36dvh, 20rem);
+      max-height: min(36svh, 20rem);
     }
   }
 
