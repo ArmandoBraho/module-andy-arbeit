@@ -6,21 +6,13 @@ export function PhoneFab() {
   const [jumping, setJumping] = useState(false)
 
   useEffect(() => {
-    let intervalId: number | undefined
-
-    const timeoutId = window.setTimeout(() => {
+    const intervalId = window.setInterval(() => {
       setJumping(true)
       window.setTimeout(() => setJumping(false), 650)
-
-      intervalId = window.setInterval(() => {
-        setJumping(true)
-        window.setTimeout(() => setJumping(false), 650)
-      }, 10000)
-    }, 2000)
+    }, 11000)
 
     return () => {
-      window.clearTimeout(timeoutId)
-      if (intervalId) window.clearInterval(intervalId)
+      window.clearInterval(intervalId)
     }
   }, [])
 
