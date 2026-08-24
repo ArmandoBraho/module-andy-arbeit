@@ -2528,8 +2528,8 @@
   z-index: 2;
   flex-shrink: 0;
   padding: 0.85rem 1rem 1rem;
-  background: rgba(20, 20, 20, 0.92);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #f3f4f6;
+  border-bottom: 1px solid $color-border;
 }
 
 .layout--overlay-hero .leistungen-carousel--overview .leistungen-carousel__indicators {
@@ -3313,6 +3313,36 @@
   .leistungen-carousel--viewport .leistungen-carousel__indicator-icon svg {
     width: 16px;
     height: 16px;
+  }
+
+  /* Übersicht: light strip that matches the page, not the dark photo chrome */
+  .leistungen-carousel--viewport.leistungen-carousel--overview .leistungen-carousel__indicators,
+  .layout--overlay-hero
+    .leistungen-carousel--viewport.leistungen-carousel--overview
+    .leistungen-carousel__indicators {
+    background: #f3f4f6;
+    border-bottom: 1px solid $color-border;
+  }
+
+  .leistungen-carousel--viewport.leistungen-carousel--overview .leistungen-carousel__indicator {
+    border-color: $color-border;
+    background: $color-bg;
+    color: $color-text;
+  }
+
+  .leistungen-carousel--viewport.leistungen-carousel--overview .leistungen-carousel__indicator:hover {
+    border-color: rgba($color-primary, 0.4);
+    background: $color-bg;
+    color: $color-primary-dark;
+  }
+
+  .leistungen-carousel--viewport.leistungen-carousel--overview
+    .leistungen-carousel__indicator--active,
+  .leistungen-carousel--viewport.leistungen-carousel--overview
+    .leistungen-carousel__indicator--active:hover {
+    background: $color-primary;
+    border-color: $color-primary;
+    color: $color-text-inverse;
   }
 }
 
