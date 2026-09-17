@@ -601,23 +601,6 @@ export const partners = [
     ],
   },
   {
-    id: 'fliesenfachbetrieb-hoti',
-    kind: 'trade' as const,
-    name: 'Fliesenfachbetrieb Hoti',
-    description:
-        'Ihr zuverlässiger Partner für Fliesenverlegung, Mosaikarbeiten und Sanierungen in Gilching und Umgebung. Langjährige Erfahrung und präzise Ausführung für höchste Qualität.',
-    image: '/partners/fliesenfachbetrieb-hoti.png',
-    website: 'https://www.fliesenfachbetrieb-hoti.de/',
-    services: [
-      'Fliesen & Platten verlegen',
-      'Mosaikverlegung',
-      'Bodenlegerarbeiten',
-      'Altbausanierung',
-      'Bad-Komplettsanierung',
-      'Renovierungen aller Art',
-    ],
-  },
-  {
     id: '5-seen-umzuege',
     kind: 'trade' as const,
     name: '5 Seen Umzüge',
